@@ -15,15 +15,17 @@ public class Main {
 
     public static void main(String[] args) {
 
-        while (true) { System.out.println("hi");
+        while (true) {
+            System.out.println("hello aryan nigga ");
             System.out.println("""
-            \n=== Welcome to the Online Marketplace ===");
-            1) Login as Farmer
-            2) Login as Customer
-            3) Register as Farmer
-            4) Register as Customer
-            5) Exit
-            Enter your choice: """); // should we have one menu for login and register then customer and farmer in another menu
+                    \n=== Welcome to the Online Marketplace ===");
+                    1) Login as Farmer
+                    2) Login as Customer
+                    3) Register as Farmer
+                    4) Register as Customer
+                    5) Exit
+                    Enter your choice: """); // should we have one menu for login and register then customer and farmer
+                                             // in another menu
 
             int choice;
             try {
@@ -174,12 +176,12 @@ public class Main {
     private static void farmerMenu(Farmer me) {
         while (true) {
             System.out.println("""
-            \n=== Farmer Menu ===
-            1) View my inventory
-            2) Add product to inventory
-            3) Remove product from inventory
-            4) Logout");
-            Choice: """);
+                    \n=== Farmer Menu ===
+                    1) View my inventory
+                    2) Add product to inventory
+                    3) Remove product from inventory
+                    4) Logout");
+                    Choice: """);
             int fchoice;
             try {
                 fchoice = Integer.parseInt(input.nextLine().trim());
@@ -228,7 +230,7 @@ public class Main {
             int quantityAvailable = Integer.parseInt(input.nextLine().trim());
             System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
             LocalDate harvestDate = LocalDate.parse(input.nextLine().trim());
-            if (harvestDate.isBefore(LocalDate.now()) ) {
+            if (harvestDate.isBefore(LocalDate.now())) {
                 throw new HarvestDateException();
             }
             System.out.print("Enter Season: "); // edit it
@@ -237,8 +239,9 @@ public class Main {
             String oranicInput = input.nextLine().trim();
             boolean organic = oranicInput.equalsIgnoreCase("yes");
 
-            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
-            system.addProduct(newProduct, me );
+            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate,
+                    season, organic);
+            system.addProduct(newProduct, me);
         } catch (Exception e) {
             System.out.println("Error adding product!");
         }
@@ -257,21 +260,21 @@ public class Main {
     private static void customerMenu(Customer me) {
         while (true) {
             System.out.println("""
-            \n=== Customer Menu ===
-            1) View all farmers and inventories
-            2) Add product to cart
-            3) Remove product to cart
-            4) View my cart
-            5) Search products by category
-            6) Search products by season
-            7) Search products by proximity
-            8) Match product by product name & farmer address
-            9) Add a subscription
-            10) Remove a subscription
-            11) Display all subscriptions
-            12) Checkout cart
-            13) Logout
-            System.out.print("Choice: """);
+                    \n=== Customer Menu ===
+                    1) View all farmers and inventories
+                    2) Add product to cart
+                    3) Remove product to cart
+                    4) View my cart
+                    5) Search products by category
+                    6) Search products by season
+                    7) Search products by proximity
+                    8) Match product by product name & farmer address
+                    9) Add a subscription
+                    10) Remove a subscription
+                    11) Display all subscriptions
+                    12) Checkout cart
+                    13) Logout
+                    System.out.print("Choice: """);
             int cchoice;
             try {
                 cchoice = Integer.parseInt(input.nextLine().trim());
@@ -320,7 +323,6 @@ public class Main {
                 case 10:
                     handleCancelSubscription(me);
                     break;
-
 
                 case 11:
                     me.displaySubscriptions();
@@ -417,7 +419,7 @@ public class Main {
             }
         }
     }
-    
+
     private static void handleAddSubscription(Customer me) {
         System.out.print("Enter category for weekly box: ");
         String subCat = input.nextLine().trim();
@@ -525,10 +527,4 @@ public class Main {
         }
     }
 
-
-
-
 }
-
-
-
