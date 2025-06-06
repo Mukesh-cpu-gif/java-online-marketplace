@@ -43,7 +43,12 @@ public class Main {
                     break;
 
                 case 2:
-                    loginFarmer();
+                    LoggedInFarmer = system.loginFarmer();
+                    farmerMenu(loggedInFarmer);
+                    if (loggedInFarmer == null) {
+                        System.out.println("Invalid farmer credentials.");
+                        return ;
+                    }
                     break;
 
                 case 3:
@@ -156,31 +161,7 @@ public class Main {
         }
     }
 
-    public static void loginFarmer() {
-        Farmer loggedInFarmer = null;
-        System.out.print("\nEnter Farmer ID: ");
-        int farmerID;
-        try {
-            farmerID = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException nfe) {
-            System.out.println("Invalid ID format.");
-            return;
-        }
-        System.out.print("Enter password: ");
-        String farmerPassword = input.nextLine().trim();
-        for (Farmer f : farmers) {
-            if (f.getUserID() == farmerID && f.userAuthentication(farmerPassword)) {
-                loggedInFarmer = f;
-                break;
-            }
-        }
-        if (loggedInFarmer == null) {
-            System.out.println("Invalid farmer credentials.");
-            return;
-        }
-        System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
-        farmerMenu(loggedInFarmer);
-    }
+
 
     public static void loginCustomer() {
         Customer loggedInCustomer = null;
@@ -235,7 +216,7 @@ public class Main {
                     break;
 
                 case 3:
-                    handleRemoveProduct();
+                    system.removeProduct(me);
                     break;
 
                 case 4:
@@ -481,7 +462,7 @@ public class Main {
     private static void handleMatchProduct(Customer me) {
         System.out.print("\nEnter product name: ");
         String pname = input.nextLine().trim();
-        system.matchFarmer(system.getProduct(pname), me);
+        system.matchFarmer(system.checkProduct(pname), me);
     }
 
     private static void handleAddSubscription(Customer me) {

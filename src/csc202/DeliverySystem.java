@@ -49,6 +49,26 @@ public class DeliverySystem {
         return null;
     }
 
+    // check a product is there or no with pName
+    public Product checkProduct(String pName){
+        for (Product product : products) {
+            if (pName.equals(product.getProductName())) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    // check a product is there or no with pID
+    public Product checkProduct(int pID){
+        for (Product product : products) {
+            if (pID == product.getProductID()) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     // REGISTER a farmer
     public void registerUser(User user) {
         System.out.print("\nEnter ID (int): ");
@@ -75,8 +95,8 @@ public class DeliverySystem {
                     farmerFile.writeFarmers(farmers);
                     searchEngine.setFarmersProductSearchEngine(farmers);
                 }
-                farmers.add(newFarmer);
                 System.out.println("Farmer registered successfully!");
+                displayAllFarmers();
             } catch (IOException e) {
                 System.out.println("Error writing farmers.txt: " + e.getMessage());
             }
@@ -92,8 +112,8 @@ public class DeliverySystem {
                     customers.add(newCustomer);
                     customerFile.writeCustomers(customers);
                 }
-                customers.add(newCustomer);
                 System.out.println("Customer registered successfully!");
+                displayAllCustomers();
             } catch (IOException e) {
                 System.out.println("Error writing customers.txt: " + e.getMessage());
             } catch (Exception e){
@@ -102,6 +122,27 @@ public class DeliverySystem {
         }
     }
 
+    // login as farmer
+    public Farmer loginFarmer() {
+        Farmer loggedInFarmer = null;
+        System.out.print("\nEnter Farmer ID: ");
+        int farmerID;
+        try {
+            farmerID = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return loggedInFarmer;
+        }
+        System.out.print("Enter password: ");
+        String farmerPassword = Main.getInput().nextLine().trim();
+        for (Farmer f : farmers) {
+            if (f.getUserID() == farmerID && f.userAuthentication(farmerPassword)) {
+                loggedInFarmer = f;
+                break;
+            }
+        System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
+    }
+        
     // Remove a user
     public void removeUser(User user) {
         System.out.print("\nEnter User ID to remove: ");
@@ -221,24 +262,21 @@ public class DeliverySystem {
     }
 
     // remove product by farmer
-    public void removeProduct() {
+    public void removeProduct(Farmer currentFarmer) {
         System.out.print("\nEnter Product ID to remove: ");
+        int productID;
         try {
-            int productID = Integer.parseInt(Main.getInput().nextLine().trim());
-            system.removeProduct(productID);
+            productID = Integer.parseInt(Main.getInput().nextLine().trim());
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid ID format.");
+            return;
         }
-        Product toRemove = null;
-        for (Product product : products) {
-            if (product.getProductID() == productID) {
-                toRemove = product;
-                break;
-            }
-        }
-        if (toRemove != null) {
-            products.remove(toRemove);
+        Product productToRemove = checkProduct(productID);
+        if (productToRemove != null) {
             try {
+                products.remove(productToRemove);
+                // Also remove from owning farmer’s inventory:
+                currentFarmer.removeProduct(productToRemove);
                 productFile.writeProducts(products);
                 System.out.println("Product " + productID + " removed.");
             } catch (IOException e) {
@@ -248,14 +286,7 @@ public class DeliverySystem {
             System.out.println("No product with ID " + productID + " found.");
         }
     }
-    public Product getProduct(String pName){
-        for (Product product : products) {
-            if (pName.equals(product.getProductName())) {
-                return product;
-            }
-        }
-        return null;
-    }
+
 
     public ArrayList<Product> searchByCategory(String category) {
         return searchEngine.searchByCategory(category);
