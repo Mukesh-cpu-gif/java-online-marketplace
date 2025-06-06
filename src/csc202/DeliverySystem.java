@@ -221,7 +221,14 @@ public class DeliverySystem {
     }
 
     // remove product by farmer
-    public void removeProduct(int productID) {
+    public void removeProduct() {
+        System.out.print("\nEnter Product ID to remove: ");
+        try {
+            int productID = Integer.parseInt(input.nextLine().trim());
+            system.removeProduct(productID);
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+        }
         Product toRemove = null;
         for (Product product : products) {
             if (product.getProductID() == productID) {

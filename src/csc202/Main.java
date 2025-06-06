@@ -126,22 +126,22 @@ public class Main {
                     break;
 
                 case 3:
-                    Farmer newFarmer = null;
+                    Farmer newFarmer = new Farmer();
                     system.registerUser(newFarmer);
                     break;
 
                 case 4:
-                    Customer newCustomer = null;
+                    Customer newCustomer = new Customer();
                     system.registerUser(newCustomer);
                     break;
 
                 case 5:
-                    Farmer farmer = null;
+                    Farmer farmer = new Farmer();
                     system.removeUser(farmer);
                     break;
 
                 case 6:
-                    Customer customer = null;
+                    Customer customer = new Customer();
                     system.removeUser(customer);
                     break;
 
@@ -254,7 +254,7 @@ public class Main {
         System.out.print("\nEnter Product ID to remove: ");
         try {
             int productID = Integer.parseInt(input.nextLine().trim());
-            system.removeProduct(productID);
+            //system.removeProduct(productID);
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid ID format.");
         }
