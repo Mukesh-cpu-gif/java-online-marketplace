@@ -20,14 +20,14 @@ public class Product {
     Product(int productID, String productName, String productDescription,
             String productCategory, double productPrice, int quantityAvailable,
             LocalDate harvestDate, String season, boolean organic) {
-        this.productID = productID;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productCategory = productCategory;
+        setProductID(productID);
+        setProductName(productName);
+        setProductDescription(productDescription);
+        setProductCategory(productCategory);
         setProductPrice(productPrice);
         setQuantityAvailable(quantityAvailable);
         setHarvestDate(harvestDate);
-        this.season = season.toLowerCase();
+        this.season = season;
         this.organic = organic;
     }
 
@@ -51,6 +51,21 @@ public class Product {
         return productPrice;
     }
 
+    public int getQuantityAvailable() {
+        return quantityAvailable;
+    }
+    public LocalDate getHarvestDate() {
+        return harvestDate;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public boolean getOrganic() {
+        return organic;
+    }
+
     public void setProductPrice(double productPrice) {
         if (productPrice <= 0) {
             throw new IllegalArgumentException("Price can't be negative or zero.");
@@ -58,8 +73,32 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public int getQuantityAvailable() {
-        return quantityAvailable;
+    public void setProductID(int productID) {
+        if(productID <= 0){
+            throw new IllegalArgumentException("Product ID can't be negative or zero.");
+        }
+        this.productID = productID;
+    }
+
+    public void setProductName(String productName) {
+        if(productName == null || productName.trim().isEmpty()){
+            throw new IllegalArgumentException("Product Name can't be null or empty.");
+        }
+        this.productName = productName;
+    }
+
+    public void setProductDescription(String productDescription) {
+        if(productDescription == null || productDescription.trim().isEmpty()){
+            throw new IllegalArgumentException("Product Description can't be null or empty.");
+        }
+        this.productDescription = productDescription;
+    }
+
+    public void setProductCategory(String productCategory) {
+        if(productCategory == null || productCategory.trim().isEmpty()){
+            throw new IllegalArgumentException("Product Name can't be null or empty.");
+        }
+        this.productCategory = productCategory;
     }
 
     public void setQuantityAvailable(int quantityAvailable) {
@@ -69,10 +108,6 @@ public class Product {
         this.quantityAvailable = quantityAvailable;
     }
 
-    public LocalDate getHarvestDate() {
-        return harvestDate;
-    }
-
     public void setHarvestDate(LocalDate harvestDate) {
         if (harvestDate.isBefore(LocalDate.now())) {
             throw new HarvestDateException();
@@ -80,23 +115,7 @@ public class Product {
         this.harvestDate = harvestDate;
     }
 
-    public String getSeason() {
-        return season;
-    }
-
-    public void setSeason(String season) {
-        this.season = season.toLowerCase();
-    }
-
-    public boolean getOrganic() {
-        return organic;
-    }
-
-    public void setOrganic(boolean organic) {
-        this.organic = organic;
-    }
-
-    private String getSeasonFromDate(LocalDate date) {
+    public static String getSeasonFromDate(LocalDate date) {
         int month = date.getMonthValue();
         switch (month) {
             case 12:
