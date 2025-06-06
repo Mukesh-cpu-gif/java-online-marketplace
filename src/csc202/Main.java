@@ -51,12 +51,12 @@ public class Main {
                     break;
 
                 case 4:
-                    Farmer farmer = null;
+                    Farmer farmer = new Farmer();
                     system.registerUser(farmer);
                     break;
 
                 case 5:
-                    Customer customer = null;
+                    Customer customer = new Customer();
                     system.registerUser(customer);
                     break;
 
