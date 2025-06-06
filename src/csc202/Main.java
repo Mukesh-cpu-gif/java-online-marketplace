@@ -20,7 +20,7 @@ public class Main {
 
         while (true) {
             System.out.println("""
-            \n=== Welcome to the Online Marketplace ===");
+            \n=== Welcome to the Online Marketplace ===
             1) Login as Admin
             2) Login as Farmer
             3) Login as Customer
