@@ -165,6 +165,27 @@ public class DeliverySystem {
         return loggedInCustomer;
     }
 
+    // Admin a user
+    public Admin loginAdmin(){
+        Admin admin = new Admin();
+        Admin loggedInAdmin = null;
+        System.out.print("\nEnter User ID: ");
+        int adminID;
+        try {
+            adminID = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return loggedInAdmin;
+        }
+        System.out.print("Enter password: ");
+        String adminPassword = Main.getInput().nextLine().trim();
+
+        if (admin.getUserID() == adminID && admin.userAuthentication(adminPassword)) {
+            loggedInAdmin = admin;
+        }
+        return loggedInAdmin;
+    }
+
     // Remove a user
     public void removeUser(User user) {
         System.out.print("\nEnter User ID to remove: ");

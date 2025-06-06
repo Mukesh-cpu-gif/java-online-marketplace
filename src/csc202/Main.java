@@ -39,7 +39,13 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    loginAdmin();
+                    Admin loggedInAdmin = system.loginAdmin();
+                    if (loggedInAdmin == null) {
+                        System.out.println("Invalid Admin credentials.");
+                        break;
+                    }
+                    System.out.println("Logged in as Admin.");
+                    AdminMenu(loggedInAdmin);
                     break;
 
                 case 2:
@@ -85,31 +91,7 @@ public class Main {
         }
     }
 
-    public static void loginAdmin(){
-        Admin admin = new Admin();
-        Admin loggedInAdmin = null;
-        System.out.print("\nEnter User ID: ");
-        int adminID;
-        try {
-            adminID = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException nfe) {
-            System.out.println("Invalid ID format.");
-            return;
-        }
-        System.out.print("Enter password: ");
-        String adminPassword = input.nextLine().trim();
 
-        if (admin.getUserID() == adminID && admin.userAuthentication(adminPassword)) {
-            loggedInAdmin = admin;
-        }
-
-        if (loggedInAdmin == null) {
-            System.out.println("Invalid Admin credentials.");
-            return;
-        }
-        System.out.println("Logged in as Admin.");
-        AdminMenu(loggedInAdmin);
-    }
 
     private static void AdminMenu(Admin me) {
         while (true) {
