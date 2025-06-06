@@ -39,102 +39,136 @@ public class DeliverySystem {
         return null;
     }
 
-    // REGISTER a farmer
-    public void registerFarmer() {
-        try {
-            System.out.print("\nEnter Farmer ID (int): ");
-            int idF = Integer.parseInt(Main.getInput().nextLine().trim());
-            System.out.print("Enter name: ");
-            String nameF = Main.getInput().nextLine().trim();
-            System.out.print("Enter email: ");
-            String emailF = Main.getInput().nextLine().trim();
-            System.out.print("Enter farm address: ");
-            String addressF = Main.getInput().nextLine().trim();
-            System.out.print("Enter password: ");
-            String passwordF = Main.getInput().nextLine().trim();
-            System.out.print("Enter location X coordinate: ");
-            double xF = Double.parseDouble(Main.getInput().nextLine().trim());
-            System.out.print("Enter location Y coordinate: ");
-            double yF = Double.parseDouble(Main.getInput().nextLine().trim());
-            Coordinate coordF = new Coordinate(xF, yF);
-            Farmer newFarmer = new Farmer(idF, nameF, emailF, addressF, passwordF, coordF);
-            if (!farmers.contains(newFarmer)) {
-                farmers.add(newFarmer);
-                farmerFile.writeFarmers(farmers);
-                searchEngine.setFarmersProductSearchEngine(farmers);
+    //check a customer is there or no
+    public Customer checkCustomer(int customerID){
+        for (Customer customer : customers){
+            if (customer.getUserID() == customerID){
+                return customer;
             }
-            farmers.add(newFarmer);
-            System.out.println("Farmer registered successfully!");
-        } catch (IOException e) {
-            System.out.println("Error writing farmers.txt: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error registering farmer: " + e.getMessage());
         }
-
+        return null;
     }
 
-    // Remove a farmer
-    public void removeFarmer(int farmerID) {
-        Farmer toRemove = checkFarmer(farmerID);
+    // REGISTER a farmer
+    public void registerUser(User user) {
+        System.out.print("\nEnter ID (int): ");
+        int id = Integer.parseInt(Main.getInput().nextLine().trim());
+        System.out.print("Enter name: ");
+        String name = Main.getInput().nextLine().trim();
+        System.out.print("Enter email: ");
+        String email = Main.getInput().nextLine().trim();
+        System.out.print("Enter address: ");
+        String address = Main.getInput().nextLine().trim();
+        System.out.print("Enter password: ");
+        String password = Main.getInput().nextLine().trim();
+        System.out.print("Enter location X coordinate: ");
+        double x = Double.parseDouble(Main.getInput().nextLine().trim());
+        System.out.print("Enter location Y coordinate: ");
+        double y = Double.parseDouble(Main.getInput().nextLine().trim());
+        Coordinate coord = new Coordinate(x, y);
 
-        if (toRemove != null) {
-            ArrayList<Product> owned = toRemove.getAvailableProducts();
-            for (Product p : owned) {
-                for (int j = 0; j < products.size(); j++) {
-                    if (products.get(j).getProductID() == p.getProductID()) {
-                        products.remove(j);
-                        break;
-                    }
-                }
-            }
-            farmers.remove(toRemove);
-
+        if (user instanceof Farmer){
+            Farmer newFarmer = new Farmer(id, name, email, address, password, coord);
             try {
-                farmerFile.writeFarmers(farmers);
+                if (!farmers.contains(newFarmer)) {
+                    farmers.add(newFarmer);
+                    farmerFile.writeFarmers(farmers);
+                    searchEngine.setFarmersProductSearchEngine(farmers);
+                }
+                farmers.add(newFarmer);
+                System.out.println("Farmer registered successfully!");
             } catch (IOException e) {
                 System.out.println("Error writing farmers.txt: " + e.getMessage());
             }
+        } else if(user instanceof Customer){
+            Customer newCustomer = new Customer(id, name, email, address, password, coord);
             try {
-                productFile.writeProducts(products);
+                System.out.print("Receive seasonal updates? (yes/no): ");
+                String upd = Main.getInput().nextLine().trim().toLowerCase();
+                if (upd.equals("yes")) {
+                    newCustomer.setSeasonalUpdates(true);
+                }
+                if (!customers.contains(newCustomer)) {
+                    customers.add(newCustomer);
+                    customerFile.writeCustomers(customers);
+                }
+                customers.add(newCustomer);
+                System.out.println("Customer registered successfully!");
             } catch (IOException e) {
-                System.out.println("Error writing produce.txt: " + e.getMessage());
+                System.out.println("Error writing customers.txt: " + e.getMessage());
+            } catch (Exception e){
+                System.out.println("Error registering customer!" + e.getMessage());
             }
-            this.searchEngine = new ProductSearchEngine(farmers);
-            System.out.println("Farmer " + farmerID + " removed.");
-        } else {
-            System.out.println("No farmer with ID " + farmerID + " found.");
         }
     }
 
-    public void registerCustomer(Customer customer) {
-        if (customer != null && !customers.contains(customer)) {
-            customers.add(customer);
-            try {
-                customerFile.writeCustomers(customers);
-            } catch (IOException e) {
-                System.out.println("Error writing customers.txt: " + e.getMessage());
+    // Remove a user
+    public void removeUser(User user) {
+        System.out.print("\nEnter User ID to remove: ");
+        int userID;
+        try {
+            userID = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return;
+        }
+        if (user instanceof Farmer) {
+            Farmer farmerToRemove = checkFarmer(userID);
+
+            if (farmerToRemove != null) {
+                farmerToRemove.clearAvailableProducts();
+                farmers.remove(farmerToRemove);
+
+                try {
+                    farmerFile.writeFarmers(farmers);
+                } catch (IOException e) {
+                    System.out.println("Error writing farmers.txt: " + e.getMessage());
+                }
+                try {
+                    productFile.writeProducts(products);
+                } catch (IOException e) {
+                    System.out.println("Error writing produce.txt: " + e.getMessage());
+                }
+                searchEngine.setFarmersProductSearchEngine(farmers);
+                System.out.println("Farmer " + userID + " removed.");
+            } else {
+                System.out.println("No farmer with ID " + userID + " found.");
+            }
+        }else if(user instanceof Customer) {
+            Customer customerToRemove = checkCustomer(userID);
+
+            if (customerToRemove != null) {
+                customerToRemove.clearShoppingCart();
+                customerToRemove.clearSubscriptions();
+                customers.remove(customerToRemove);
+
+                try {
+                    customerFile.writeCustomers(customers);
+                } catch (IOException e) {
+                    System.out.println("Error writing customers.txt: " + e.getMessage());
+                }
+                System.out.println("Customer " + userID + " removed.");
+            } else {
+                System.out.println("No Customer with ID " + userID + " found.");
             }
         }
     }
 
-    public void removeCustomer(int customerID) {
-        Customer toRemove = null;
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getUserID() == customerID) {
-                toRemove = customers.get(i);
-                break;
-            }
+    //display all farmers
+    public void displayAllFarmers() {
+        for (Farmer f : farmers) {
+            f.displayUser();
+            f.displayAvailableProducts();
+            System.out.println();
         }
-        if (toRemove != null) {
-            customers.remove(toRemove);
-            try {
-                customerFile.writeCustomers(customers);
-                System.out.println("Customer " + customerID + " removed.");
-            } catch (IOException e) {
-                System.out.println("Error writing customers.txt: " + e.getMessage());
-            }
-        } else {
-            System.out.println("No customer with ID " + customerID + " found.");
+    }
+
+    //display all customers
+    public void displayAllCustomers() {
+        for (Customer c : customers) {
+            c.displayUser();
+            c.displayShoppingCart();
+            System.out.println();
         }
     }
 
@@ -265,24 +299,6 @@ public class DeliverySystem {
             customerFile.writeCustomers(customers);
         } catch (IOException e) {
             System.out.println("Error writing customers.txt: " + e.getMessage());
-        }
-    }
-
-    public void displayAllFarmers() {
-        for (int i = 0; i < farmers.size(); i++) {
-            Farmer f = farmers.get(i);
-            f.displayUser();
-            f.displayAvailableProducts();
-            System.out.println();
-        }
-    }
-
-    public void displayAllCustomers() {
-        for (int i = 0; i < customers.size(); i++) {
-            Customer c = customers.get(i);
-            c.displayUser();
-            c.displayShoppingCart();
-            System.out.println();
         }
     }
 }

@@ -51,11 +51,13 @@ public class Main {
                     break;
 
                 case 4:
-                    system.registerFarmer();
+                    Farmer farmer = null;
+                    system.registerUser(farmer);
                     break;
 
                 case 5:
-                    registerCustomer();
+                    Customer customer = null;
+                    system.registerUser(customer);
                     break;
 
                 case 6:
@@ -124,50 +126,37 @@ public class Main {
                     break;
 
                 case 3:
-                    registerFarmer();
+                    Farmer newFarmer = null;
+                    system.registerUser(newFarmer);
                     break;
 
                 case 4:
-                    registerCustomer();
+                    Customer newCustomer = null;
+                    system.registerUser(newCustomer);
                     break;
 
                 case 5:
                     Farmer farmer = null;
-                    removeuser(farmer);
+                    system.removeUser(farmer);
                     break;
 
                 case 6:
                     Customer customer = null;
-                    removeuser(customer);
+                    system.removeUser(customer);
                     break;
+
                 case 7:
                     System.out.println("Logged out.");
                     return;
+
                 default:
-                    System.out.println("Please choose a valid option (1–4).");
+                    System.out.println("Please choose a valid option (1–7).");
                     break;
             }
         }
-
     }
 
-    private static void removeuser(User user) {
-        System.out.print("\nEnter User ID to remove: ");
-        int userID;
-        try {
-            userID = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException nfe) {
-            System.out.println("Invalid ID format.");
-            return;
-        }
-        if (user instanceof Farmer){
-            system.removeFarmer(userID);
-        }
-        else if (user instanceof Customer){
-            system.removeCustomer((userID));
-        }
 
-    }
 
     public static void loginFarmer() {
         Farmer loggedInFarmer = null;
@@ -221,31 +210,6 @@ public class Main {
         customerMenu(loggedInCustomer);
     }
 
-    public static void registerFarmer() {
-        try {
-            System.out.print("\nEnter Farmer ID (int): ");
-            int idF = Integer.parseInt(input.nextLine().trim());
-            System.out.print("Enter name: ");
-            String nameF = input.nextLine().trim();
-            System.out.print("Enter email: ");
-            String emailF = input.nextLine().trim();
-            System.out.print("Enter farm address: ");
-            String addressF = input.nextLine().trim();
-            System.out.print("Enter password: ");
-            String passwordF = input.nextLine().trim();
-            System.out.print("Enter location X coordinate: ");
-            double xF = Double.parseDouble(input.nextLine().trim());
-            System.out.print("Enter location Y coordinate: ");
-            double yF = Double.parseDouble(input.nextLine().trim());
-            Coordinate coordF = new Coordinate(xF, yF);
-            Farmer newFarmer = new Farmer(idF, nameF, emailF, addressF, passwordF, coordF);
-            system.registerFarmer();
-            farmers.add(newFarmer);
-            System.out.println("Farmer registered successfully!");
-        } catch (Exception e) {
-            System.out.println("Error registering farmer: " + e.getMessage());
-        }
-    }
 
     public static void registerCustomer() {
         try {

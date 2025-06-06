@@ -26,6 +26,10 @@ public class Farmer extends User {
         availableProducts.remove(p);
     }
 
+    public void clearAvailableProducts(){
+        availableProducts.clear();
+    }
+
     @Override
     public void displayUser() {
         System.out.println("Farmer ID: " + getUserID());

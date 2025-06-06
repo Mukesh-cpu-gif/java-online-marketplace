@@ -71,6 +71,14 @@ public class Customer extends User {
         }
     }
 
+    public void clearShoppingCart(){
+        shoppingCart.clear();
+    }
+
+    public void clearSubscriptions(){
+        subscriptions.clear();
+    }
+
     @Override
     public void displayUser() {
         System.out.println("Customer ID: " + getUserID());
