@@ -22,7 +22,9 @@ public class FarmerFile {
                 output.println("Y Coorinate: " + i.getLocationCoordinates().getY());
                 output.println("Available Products: ");
                 for (Product product : i.getAvailableProducts()) {
-                    output.println(product.getProductName());
+                    output.println("hi");
+                    String pname = product.getProductName();
+                    output.println(pname);
                 }
                 output.println();
             }

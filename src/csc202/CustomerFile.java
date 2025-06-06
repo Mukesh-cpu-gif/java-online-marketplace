@@ -17,6 +17,8 @@ public class CustomerFile {
                 output.println("Customer Name: " + i.getUserName());
                 output.println("Customer Email: " + i.getUserEmail());
                 output.println("Delivery Address: " + i.getUserAddress());
+                output.println("X Coordinate: " + i.getLocationCoordinates().getX());
+                output.println("Y Coordinate: " + i.getLocationCoordinates().getY());
                 output.println();
             }
         }

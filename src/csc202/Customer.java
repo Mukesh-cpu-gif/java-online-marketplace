@@ -61,6 +61,7 @@ public class Customer extends User {
 
     public void activateSubscription(Subscription s) {
         subscriptions.add(s);
+        s.activateSubscription();
     }
 
     public void removeSubscription(int subscriptionID) {

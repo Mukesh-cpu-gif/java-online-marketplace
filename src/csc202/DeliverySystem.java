@@ -49,6 +49,16 @@ public class DeliverySystem {
         return false;
     }
 
+    // check if productID is already taken
+    public boolean checkProductID(int ID){
+        for(Farmer farmer : farmers){
+            if( farmer.getUserID() == ID){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //check a farmer is there or no
     public Farmer checkFarmer(int farmerID){
         for (Farmer farmer : farmers){
@@ -108,6 +118,11 @@ public class DeliverySystem {
         Coordinate coord = new Coordinate(x, y);
 
         if (user instanceof Farmer){
+            Farmer farmer = new Farmer();
+            if(checkUserID(id, farmer)){
+                System.out.println("Farmer ID already taken.");
+                return;
+            }
             Farmer newFarmer = new Farmer(id, name, email, address, password, coord);
             try {
                 if (!farmers.contains(newFarmer)) {
@@ -295,6 +310,7 @@ public class DeliverySystem {
         if (harvestDate.isBefore(LocalDate.now()) ) {
             throw new HarvestDateException();
         }
+
         System.out.print("Is it seasonal? (yes/no): ");
         String seasonalInput = Main.getInput().nextLine().trim();
         String season;
