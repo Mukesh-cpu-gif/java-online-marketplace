@@ -156,8 +156,6 @@ public class Main {
         }
     }
 
-
-
     public static void loginFarmer() {
         Farmer loggedInFarmer = null;
         System.out.print("\nEnter Farmer ID: ");
@@ -208,39 +206,6 @@ public class Main {
         }
         System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
         customerMenu(loggedInCustomer);
-    }
-
-
-    public static void registerCustomer() {
-        try {
-            System.out.print("\nEnter Customer ID (int): ");
-            int idC = Integer.parseInt(input.nextLine().trim());
-            System.out.print("Enter name: ");
-            String nameC = input.nextLine().trim();
-            System.out.print("Enter email: ");
-            String emailC = input.nextLine().trim();
-            System.out.print("Enter delivery address: ");
-            String addressC = input.nextLine().trim();
-            System.out.print("Enter password: ");
-            String passwordC = input.nextLine().trim();
-            System.out.print("Enter location X coordinate: ");
-            double xC = Double.parseDouble(input.nextLine().trim());
-            System.out.print("Enter location Y coordinate: ");
-            double yC = Double.parseDouble(input.nextLine().trim());
-            Coordinate coordC = new Coordinate(xC, yC);
-            Customer newCustomer = new Customer(idC, nameC, emailC, addressC, passwordC, coordC);
-            System.out.print("Receive seasonal updates? (yes/no): ");
-            String upd = input.nextLine().trim().toLowerCase();
-            if (upd.equals("yes")) {
-                newCustomer.setSeasonalUpdates(true);
-            }
-            system.registerCustomer(newCustomer);
-            customers.add(newCustomer);
-            System.out.println("Customer registered successfully!");
-        } catch (Exception e) {
-            System.out.println("Error registering customer: " + e.getMessage());
-        }
-
     }
 
     private static void farmerMenu(Farmer me) {

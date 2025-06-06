@@ -172,7 +172,9 @@ public class DeliverySystem {
         }
     }
 
+
     public void addProduct(Product p, Farmer f) {
+
         if (p != null && !products.contains(p)) {
             products.add(p);
             // Also add to owning farmer’s inventory:
