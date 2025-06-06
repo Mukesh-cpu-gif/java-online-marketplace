@@ -43,16 +43,25 @@ public class Main {
                     break;
 
                 case 2:
-                    LoggedInFarmer = system.loginFarmer();
-                    farmerMenu(loggedInFarmer);
+                    Farmer loggedInFarmer = system.loginFarmer();
+
                     if (loggedInFarmer == null) {
                         System.out.println("Invalid farmer credentials.");
-                        return ;
+                        break;
                     }
+                    System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
+                    farmerMenu(loggedInFarmer);
                     break;
 
                 case 3:
-                    loginCustomer();
+                    Customer loggedInCustomer = system.loginCustomer();
+
+                    if (loggedInCustomer == null) {
+                        System.out.println("Invalid customer credentials.");
+                        break;
+                    }
+                    System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
+                    farmerMenu(loggedInCustomer);
                     break;
 
                 case 4:
@@ -159,34 +168,6 @@ public class Main {
                     break;
             }
         }
-    }
-
-
-
-    public static void loginCustomer() {
-        Customer loggedInCustomer = null;
-        System.out.print("\nEnter Customer ID: ");
-        int customerID;
-        try {
-            customerID = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException nfe) {
-            System.out.println("Invalid ID format.");
-            return;
-        }
-        System.out.print("Enter password: ");
-        String customerPassword = input.nextLine().trim();
-        for (Customer c : customers) {
-            if (c.getUserID() == customerID && c.userAuthentication(customerPassword)) {
-                loggedInCustomer = c;
-                break;
-            }
-        }
-        if (loggedInCustomer == null) {
-            System.out.println("Invalid customer credentials.");
-            return;
-        }
-        System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
-        customerMenu(loggedInCustomer);
     }
 
     private static void farmerMenu(Farmer me) {

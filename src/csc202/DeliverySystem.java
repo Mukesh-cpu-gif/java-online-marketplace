@@ -140,9 +140,31 @@ public class DeliverySystem {
                 loggedInFarmer = f;
                 break;
             }
-        System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
+        }
+        return loggedInFarmer;
     }
-        
+
+    public Customer loginCustomer() {
+        Customer loggedInCustomer = null;
+        System.out.print("\nEnter Customer ID: ");
+        int customerID;
+        try {
+            customerID = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return loggedInCustomer;
+        }
+        System.out.print("Enter password: ");
+        String customerPassword = Main.getInput().nextLine().trim();
+        for (Customer c : customers) {
+            if (c.getUserID() == customerID && c.userAuthentication(customerPassword)) {
+                loggedInCustomer = c;
+                break;
+            }
+        }
+        return loggedInCustomer;
+    }
+
     // Remove a user
     public void removeUser(User user) {
         System.out.print("\nEnter User ID to remove: ");
