@@ -239,7 +239,7 @@ public class Main {
                     break;
 
                 case 3:
-                    handleRemoveFromCart(me);
+                    system.handleRemoveFromCart(me);
                     break;
 
                 case 4:
@@ -248,7 +248,7 @@ public class Main {
                     break;
 
                 case 5:
-                    handleSearchByCategory();
+                    system.handleSearchByCategory();
                     break;
 
                 case 6:
@@ -291,51 +291,6 @@ public class Main {
         }
     }
 
-
-    private static void handleRemoveFromCart(Customer me) {
-        System.out.print("\nEnter Product name to remove from cart: ");
-        String pname;
-        pname = input.nextLine().trim();
-
-        System.out.print("Enter quantity to remove: ");
-        int qty;
-        try {
-            qty = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid quantity.");
-            return;
-        }
-        Product toCart = null;
-        for (Product product : products) {
-            if (pname.equals(product.getProductName())) {
-                toCart = product;
-                break;
-            }
-        }
-        if (toCart != null) {
-            try {
-                me.removeFromCart(toCart, qty);
-                System.out.println("Removed from cart: " + toCart.getProductName() + " (Qty: " + qty + ")");
-            } catch (IllegalArgumentException iae) {
-                System.out.println("Error: " + iae.getMessage());
-            }
-        } else {
-            System.out.println("Product not found.");
-        }
-    }
-
-    private static void handleSearchByCategory() {
-        System.out.print("\nEnter category: ");
-        String cat = input.nextLine().trim();
-        ArrayList<Product> byCat = system.searchByCategory(cat);
-        if (byCat.isEmpty()) {
-            System.out.println("No products found in that category.");
-        } else {
-            for (Product product : byCat) {
-                System.out.println(product);
-            }
-        }
-    }
 
     private static void handleSearchBySeason() {
         System.out.print("\nEnter season date (YYYY-MM-DD): ");

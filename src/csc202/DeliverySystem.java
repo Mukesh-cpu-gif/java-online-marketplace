@@ -336,6 +336,7 @@ public class DeliverySystem {
         }
     }
 
+    // add to cart
     public void handleAddToCart(Customer me) {
         System.out.print("\nEnter Product name to add to cart: ");
         String pname;
@@ -356,15 +357,53 @@ public class DeliverySystem {
                 me.addToCart(productToCart, qty);
                 System.out.println("Added to cart: " + productToCart.getProductName() + " (Qty: " + qty + ")");
             } catch (IllegalArgumentException iae) {
-                System.out.println("Error: " + iae.getMessage());
+                System.out.println("Error adding to cart.");
             }
         } else {
             System.out.println("Product not found.");
         }
     }
 
-    public ArrayList<Product> searchByCategory(String category) {
-        return searchEngine.searchByCategory(category);
+    // remove from cart
+    public void handleRemoveFromCart(Customer me) {
+        System.out.print("\nEnter Product name to remove from cart: ");
+        String pname;
+        pname = Main.getInput().nextLine().trim();
+
+        System.out.print("Enter quantity to remove: ");
+        int qty;
+        try {
+            qty = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid quantity.");
+            return;
+        }
+        Product productToCart = checkProduct(pname);
+
+        if (productToCart != null) {
+            try {
+                me.removeFromCart(productToCart, qty);
+                System.out.println("Removed from cart: " + productToCart.getProductName() + " (Qty: " + qty + ")");
+            } catch (IllegalArgumentException iae) {
+                System.out.println("Error removing from cart ");
+            }
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
+
+    // search by category
+    public void handleSearchByCategory() {
+        System.out.print("\nEnter category: ");
+        String category = Main.getInput().nextLine().trim();
+        ArrayList<Product> byCat = searchEngine.searchByCategory(category);
+        if (byCat.isEmpty()) {
+            System.out.println("No products found in that category.");
+        } else {
+            for (Product product : byCat) {
+                System.out.println(product);
+            }
+        }
     }
 
     public ArrayList<Product> searchBySeason(LocalDate date) {
