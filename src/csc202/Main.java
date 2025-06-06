@@ -2,7 +2,6 @@ package csc202;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -13,19 +12,22 @@ public class Main {
     private static ArrayList<Customer> customers = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
 
+    public static Scanner getInput() {
+        return input;
+    }
+
     public static void main(String[] args) {
 
         while (true) {
-            System.out.println("hello mukesh nigga ");
             System.out.println("""
-                    \n=== Welcome to the Online Marketplace ===");
-                    1) Login as Farmer
-                    2) Login as Customer
-                    3) Register as Farmer
-                    4) Register as Customer
-                    5) Exit
-                    Enter your choice: """); // should we have one menu for login and register then customer and farmer
-                                             // in another menu
+            \n=== Welcome to the Online Marketplace ===");
+            1) Login as Admin
+            2) Login as Farmer
+            3) Login as Customer
+            4) Register as Farmer
+            5) Register as Customer
+            6) Exit""");
+            System.out.print("Enter your choice: "); // should we have one menu for login and register then customer and farmer in another menu
 
             int choice;
             try {
@@ -37,11 +39,88 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    loginFarmer();
+                    loginAdmin();
                     break;
 
                 case 2:
+                    loginFarmer();
+                    break;
+
+                case 3:
                     loginCustomer();
+                    break;
+
+                case 4:
+                    system.registerFarmer();
+                    break;
+
+                case 5:
+                    registerCustomer();
+                    break;
+
+                case 6:
+                    System.out.println("Exiting the Marketplace System. \n Hope to see you again.\n Goodbye!");
+                    return;
+
+                default:
+                    System.out.println("Please choose a valid option (1–6).");
+                    break;
+            }
+        }
+    }
+
+    public static void loginAdmin(){
+        Admin admin = new Admin();
+        Admin loggedInAdmin = null;
+        System.out.print("\nEnter User ID: ");
+        int adminID;
+        try {
+            adminID = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return;
+        }
+        System.out.print("Enter password: ");
+        String adminPassword = input.nextLine().trim();
+
+        if (admin.getUserID() == adminID && admin.userAuthentication(adminPassword)) {
+            loggedInAdmin = admin;
+        }
+
+        if (loggedInAdmin == null) {
+            System.out.println("Invalid Admin credentials.");
+            return;
+        }
+        System.out.println("Logged in as Admin.");
+        AdminMenu(loggedInAdmin);
+    }
+
+    private static void AdminMenu(Admin me) {
+        while (true) {
+            System.out.println("""
+            \n=== Admin Menu ===
+            1) Display Farmers
+            2) Display Customers
+            3) Register new Farmer
+            4) Register new Customer
+            5) Remove Farmer
+            6) Remove Customer
+            7) Logout""");
+            System.out.print("Choice: ");
+            int achoice;
+            try {
+                achoice = Integer.parseInt(input.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input.");
+                continue;
+            }
+            switch (achoice) {
+                case 1:
+                    system.displayAllFarmers();
+                    break;
+
+                case 2:
+                    system.displayAllCustomers();
                     break;
 
                 case 3:
@@ -53,14 +132,41 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println("Exiting the Marketplace System. \n Hope to see you again.\n Goodbye!");
-                    return;
+                    Farmer farmer = null;
+                    removeuser(farmer);
+                    break;
 
+                case 6:
+                    Customer customer = null;
+                    removeuser(customer);
+                    break;
+                case 7:
+                    System.out.println("Logged out.");
+                    return;
                 default:
-                    System.out.println("Please choose a valid option (1–5).");
+                    System.out.println("Please choose a valid option (1–4).");
                     break;
             }
         }
+
+    }
+
+    private static void removeuser(User user) {
+        System.out.print("\nEnter User ID to remove: ");
+        int userID;
+        try {
+            userID = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException nfe) {
+            System.out.println("Invalid ID format.");
+            return;
+        }
+        if (user instanceof Farmer){
+            system.removeFarmer(userID);
+        }
+        else if (user instanceof Customer){
+            system.removeCustomer((userID));
+        }
+
     }
 
     public static void loginFarmer() {
@@ -133,7 +239,7 @@ public class Main {
             double yF = Double.parseDouble(input.nextLine().trim());
             Coordinate coordF = new Coordinate(xF, yF);
             Farmer newFarmer = new Farmer(idF, nameF, emailF, addressF, passwordF, coordF);
-            system.registerFarmer(newFarmer);
+            system.registerFarmer();
             farmers.add(newFarmer);
             System.out.println("Farmer registered successfully!");
         } catch (Exception e) {
@@ -176,12 +282,12 @@ public class Main {
     private static void farmerMenu(Farmer me) {
         while (true) {
             System.out.println("""
-                    \n=== Farmer Menu ===
-                    1) View my inventory
-                    2) Add product to inventory
-                    3) Remove product from inventory
-                    4) Logout");
-                    Choice: """);
+            \n=== Farmer Menu ===
+            1) View my inventory
+            2) Add product to inventory
+            3) Remove product from inventory
+            4) Logout""");
+            System.out.print("Choice: ");
             int fchoice;
             try {
                 fchoice = Integer.parseInt(input.nextLine().trim());
@@ -230,18 +336,24 @@ public class Main {
             int quantityAvailable = Integer.parseInt(input.nextLine().trim());
             System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
             LocalDate harvestDate = LocalDate.parse(input.nextLine().trim());
-            if (harvestDate.isBefore(LocalDate.now())) {
+            if (harvestDate.isBefore(LocalDate.now()) ) {
                 throw new HarvestDateException();
             }
-            System.out.print("Enter Season: "); // edit it
-            String season = input.nextLine().trim();
+            System.out.print("Is it seasonal? (yes/no): ");
+            String seasonalInput = input.nextLine().trim();
+            String season;
+            if(seasonalInput.equalsIgnoreCase("yes")){
+                season = Product.getSeasonFromDate(harvestDate);
+            }
+            else{
+                season = "all";
+            }
             System.out.print("Is it organic? (yes/no): ");
-            String oranicInput = input.nextLine().trim();
-            boolean organic = oranicInput.equalsIgnoreCase("yes");
+            String organicInput = input.nextLine().trim();
+            boolean organic = organicInput.equalsIgnoreCase("yes");
 
-            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate,
-                    season, organic);
-            system.addProduct(newProduct, me);
+            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
+            system.addProduct(newProduct, me );
         } catch (Exception e) {
             System.out.println("Error adding product!");
         }
@@ -260,21 +372,21 @@ public class Main {
     private static void customerMenu(Customer me) {
         while (true) {
             System.out.println("""
-                    \n=== Customer Menu ===
-                    1) View all farmers and inventories
-                    2) Add product to cart
-                    3) Remove product to cart
-                    4) View my cart
-                    5) Search products by category
-                    6) Search products by season
-                    7) Search products by proximity
-                    8) Match product by product name & farmer address
-                    9) Add a subscription
-                    10) Remove a subscription
-                    11) Display all subscriptions
-                    12) Checkout cart
-                    13) Logout
-                    System.out.print("Choice: """);
+            \n=== Customer Menu ===
+            1) View all farmers and inventories
+            2) Add product to cart
+            3) Remove product to cart
+            4) View my cart
+            5) Search products by category
+            6) Search products by season
+            7) Search products by proximity
+            8) Match product by product name & farmer address
+            9) Add a subscription
+            10) Remove a subscription
+            11) Display all subscriptions
+            12) Checkout cart
+            13) Logout""");
+            System.out.print("Choice: ");
             int cchoice;
             try {
                 cchoice = Integer.parseInt(input.nextLine().trim());
@@ -324,6 +436,7 @@ public class Main {
                     handleCancelSubscription(me);
                     break;
 
+
                 case 11:
                     me.displaySubscriptions();
                     break;
@@ -344,7 +457,7 @@ public class Main {
     }
 
     private static void handleAddToCart(Customer me) {
-        System.out.print("Enter Product name to add to cart: ");
+        System.out.print("\nEnter Product name to add to cart: ");
         String pname;
         pname = input.nextLine().trim();
 
@@ -376,7 +489,7 @@ public class Main {
     }
 
     private static void handleRemoveFromCart(Customer me) {
-        System.out.print("Enter Product name to remove from cart: ");
+        System.out.print("\nEnter Product name to remove from cart: ");
         String pname;
         pname = input.nextLine().trim();
 
@@ -408,7 +521,7 @@ public class Main {
     }
 
     private static void handleSearchByCategory() {
-        System.out.print("Enter category: ");
+        System.out.print("\nEnter category: ");
         String cat = input.nextLine().trim();
         ArrayList<Product> byCat = system.searchByCategory(cat);
         if (byCat.isEmpty()) {
@@ -420,61 +533,27 @@ public class Main {
         }
     }
 
-    private static void handleAddSubscription(Customer me) {
-        System.out.print("Enter category for weekly box: ");
-        String subCat = input.nextLine().trim();
-        System.out.print("Enter quantity per week: ");
-        int subQty;
+    private static void handleSearchBySeason() {
+        System.out.print("\nEnter season date (YYYY-MM-DD): ");
+        LocalDate date;
         try {
-            subQty = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid quantity.");
+            date = LocalDate.parse(input.nextLine().trim());
+        } catch (Exception ex) {
+            System.out.println("Invalid date format.");
             return;
         }
-        system.subscribeCustomer(me, subCat, subQty);
-        System.out.println("Subscribed to category \"" + subCat + "\" (" + subQty + "/week).");
-    }
-
-    private static void handleCancelSubscription(Customer me) {
-        me.displaySubscriptions();
-        if (me.getSubscriptions().isEmpty()) {
-            return;
+        ArrayList<Product> bySeason = system.searchBySeason(date);
+        if (bySeason.isEmpty()) {
+            System.out.println("No seasonal products found.");
+        } else {
+            for (Product product : bySeason) {
+                System.out.println(product);
+            }
         }
-        System.out.print("Enter Subscription ID to cancel: ");
-        int subId;
-        try {
-            subId = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid ID.");
-            return;
-        }
-        system.unsubscribeCustomer(me, subId);
-        System.out.println("Subscription " + subId + " removed (if it existed).");
-    }
-
-    private static void handleCheckoutCart(Customer me) {
-        if (me.getShoppingCart().isEmpty()) {
-            System.out.println("Cart is empty. Nothing to checkout.");
-            return;
-        }
-        ArrayList<CartItem> cart = new ArrayList<>(me.getShoppingCart());
-        for (CartItem ci : cart) {
-            Product p = ci.getProduct();
-            int q = ci.getQuantity();
-            system.processOrder(me, p, q);
-        }
-        me.getShoppingCart().clear();
-        System.out.println("Checkout complete; cart is now empty.");
-    }
-
-    private static void handleMatchProduct(Customer me) {
-        System.out.print("Enter product name: ");
-        String pname = input.nextLine().trim();
-        system.matchFarmer(system.getProduct(pname), me);
     }
 
     private static void handleSearchByProximity() {
-        System.out.print("Enter your X coordinate: ");
+        System.out.print("\nEnter your X coordinate: ");
         double x;
         try {
             x = Double.parseDouble(input.nextLine().trim());
@@ -508,23 +587,59 @@ public class Main {
         }
     }
 
-    private static void handleSearchBySeason() {
-        System.out.print("Enter season date (YYYY-MM-DD): ");
-        LocalDate date;
-        try {
-            date = LocalDate.parse(input.nextLine().trim());
-        } catch (Exception ex) {
-            System.out.println("Invalid date format.");
-            return;
-        }
-        ArrayList<Product> bySeason = system.searchBySeason(date);
-        if (bySeason.isEmpty()) {
-            System.out.println("No seasonal products found.");
-        } else {
-            for (Product product : bySeason) {
-                System.out.println(product);
-            }
-        }
+    private static void handleMatchProduct(Customer me) {
+        System.out.print("\nEnter product name: ");
+        String pname = input.nextLine().trim();
+        system.matchFarmer(system.getProduct(pname), me);
     }
 
+    private static void handleAddSubscription(Customer me) {
+        System.out.print("\nEnter category for weekly box: ");
+        String subCat = input.nextLine().trim();
+        System.out.print("Enter quantity per week: ");
+        int subQty;
+        try {
+            subQty = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid quantity.");
+            return;
+        }
+        system.subscribeCustomer(me, subCat, subQty);
+        System.out.println("Subscribed to category \"" + subCat + "\" (" + subQty + "/week).");
+    }
+
+    private static void handleCancelSubscription(Customer me) {
+        me.displaySubscriptions();
+        if (me.getSubscriptions().isEmpty()) {
+            return;
+        }
+        System.out.print("\nEnter Subscription ID to cancel: ");
+        int subId;
+        try {
+            subId = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid ID.");
+            return;
+        }
+        system.unsubscribeCustomer(me, subId);
+        System.out.println("Subscription " + subId + " removed (if it existed).");
+    }
+
+    private static void handleCheckoutCart(Customer me) {
+        if (me.getShoppingCart().isEmpty()) {
+            System.out.println("\nCart is empty. Nothing to checkout.");
+            return;
+        }
+        ArrayList<CartItem> cart = new ArrayList<>(me.getShoppingCart());
+        for (CartItem ci : cart) {
+            Product p = ci.getProduct();
+            int q = ci.getQuantity();
+            system.processOrder(me, p, q);
+        }
+        me.getShoppingCart().clear();
+        System.out.println("\nCheckout complete; cart is now empty.");
+    }
 }
+
+
+

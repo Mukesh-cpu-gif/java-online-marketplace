@@ -3,7 +3,7 @@ package csc202;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
+
 
 public class DeliverySystem {
 
@@ -18,7 +18,8 @@ public class DeliverySystem {
 
     private int nextSubscriptionID = 1;
 
-    public DeliverySystem() {
+    // Constructor for delivery system
+    DeliverySystem() {
         this.farmers = new ArrayList<>();
         this.customers = new ArrayList<>();
         this.products = new ArrayList<>();
@@ -28,31 +29,57 @@ public class DeliverySystem {
         this.farmerFile = new FarmerFile();
         this.productFile = new ProductFile();
     }
-
-    public void registerFarmer(Farmer farmer) {
-        if (farmer != null && !farmers.contains(farmer)) {
-            farmers.add(farmer);
-            try {
-                farmerFile.writeFarmers(farmers);
-            } catch (IOException e) {
-                System.out.println("Error writing farmers.txt: " + e.getMessage());
+    //check a farmer is there or no
+    public Farmer checkFarmer(int farmerID){
+        for (Farmer farmer : farmers){
+            if (farmer.getUserID() == farmerID){
+                return farmer;
             }
-            this.searchEngine = new ProductSearchEngine(farmers);
         }
+        return null;
     }
 
-    public void removeFarmer(int farmerID) {    
-        Farmer toRemove = null;
-        for (int i = 0; i < farmers.size(); i++) {
-            if (farmers.get(i).getUserID() == farmerID) {
-                toRemove = farmers.get(i);
-                break;
+    // REGISTER a farmer
+    public void registerFarmer() {
+        try {
+            System.out.print("\nEnter Farmer ID (int): ");
+            int idF = Integer.parseInt(Main.getInput().nextLine().trim());
+            System.out.print("Enter name: ");
+            String nameF = Main.getInput().nextLine().trim();
+            System.out.print("Enter email: ");
+            String emailF = Main.getInput().nextLine().trim();
+            System.out.print("Enter farm address: ");
+            String addressF = Main.getInput().nextLine().trim();
+            System.out.print("Enter password: ");
+            String passwordF = Main.getInput().nextLine().trim();
+            System.out.print("Enter location X coordinate: ");
+            double xF = Double.parseDouble(Main.getInput().nextLine().trim());
+            System.out.print("Enter location Y coordinate: ");
+            double yF = Double.parseDouble(Main.getInput().nextLine().trim());
+            Coordinate coordF = new Coordinate(xF, yF);
+            Farmer newFarmer = new Farmer(idF, nameF, emailF, addressF, passwordF, coordF);
+            if (!farmers.contains(newFarmer)) {
+                farmers.add(newFarmer);
+                farmerFile.writeFarmers(farmers);
+                searchEngine.setFarmersProductSearchEngine(farmers);
             }
+            farmers.add(newFarmer);
+            System.out.println("Farmer registered successfully!");
+        } catch (IOException e) {
+            System.out.println("Error writing farmers.txt: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error registering farmer: " + e.getMessage());
         }
+
+    }
+
+    // Remove a farmer
+    public void removeFarmer(int farmerID) {
+        Farmer toRemove = checkFarmer(farmerID);
+
         if (toRemove != null) {
             ArrayList<Product> owned = toRemove.getAvailableProducts();
-            for (int i = 0; i < owned.size(); i++) {
-                Product p = owned.get(i);
+            for (Product p : owned) {
                 for (int j = 0; j < products.size(); j++) {
                     if (products.get(j).getProductID() == p.getProductID()) {
                         products.remove(j);
@@ -169,6 +196,10 @@ public class DeliverySystem {
 
     public void processOrder(Customer customer, Product product, int quantity) {
         LocalDate now = LocalDate.now();
+
+        if(product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0){
+            throw new OutOfSeasonException(product.getProductName() +" is not in season and no quantity available.");
+        }
 
         if (quantity > product.getQuantityAvailable()) {
             System.out.println("Insufficient stock for \"" + product.getProductName() + "\".");
