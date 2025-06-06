@@ -5,19 +5,27 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    // Scanner object for user input
     private static Scanner input = new Scanner(System.in);
+
+    // DeliverySystem object
     private static DeliverySystem system = new DeliverySystem();
 
+    // ArrayList for storing data
     private static ArrayList<Farmer> farmers = new ArrayList<>();
     private static ArrayList<Customer> customers = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
 
+    // Getter method for scanner object
     public static Scanner getInput() {
         return input;
     }
 
+    // Main method
     public static void main(String[] args) {
 
+        // Loop for main menu
         while (true) {
             System.out.println("""
             \n=== Welcome to the Online Marketplace ===
@@ -27,8 +35,9 @@ public class Main {
             4) Register as Farmer
             5) Register as Customer
             6) Exit""");
-            System.out.print("Enter your choice: "); // should we have one menu for login and register then customer and farmer in another menu
+            System.out.print("Enter your choice: ");
 
+            // Variable for user input
             int choice;
             try {
                 choice = Integer.parseInt(input.nextLine().trim());
@@ -37,6 +46,7 @@ public class Main {
                 continue;
             }
 
+            // Switch statement for user input
             switch (choice) {
                 case 1:
                     handleLoginAdmin();
@@ -71,6 +81,7 @@ public class Main {
         }
     }
 
+    // Method to handle customer login
     private static void handleLoginCustomer() {
         Customer loggedInCustomer = system.loginCustomer();
 
@@ -82,6 +93,7 @@ public class Main {
         customerMenu(loggedInCustomer);
     }
 
+    // Method to handle farmer login
     private static void handleLoginFarmer() {
         Farmer loggedInFarmer = system.loginFarmer();
 
@@ -93,6 +105,7 @@ public class Main {
         farmerMenu(loggedInFarmer);
     }
 
+    // Method to handle admin login
     private static void handleLoginAdmin() {
         Admin loggedInAdmin = system.loginAdmin();
         if (loggedInAdmin == null) {
@@ -103,7 +116,7 @@ public class Main {
         AdminMenu(loggedInAdmin);
     }
 
-
+    // Method to display admin menu
     private static void AdminMenu(Admin me) {
         while (true) {
             System.out.println("""
@@ -163,6 +176,7 @@ public class Main {
         }
     }
 
+    // Method to display farmer menu
     private static void farmerMenu(Farmer me) {
         while (true) {
             System.out.println("""
@@ -204,6 +218,7 @@ public class Main {
         }
     }
 
+    // Method to display customer menu
     private static void customerMenu(Customer me) {
         while (true) {
             System.out.println("""
@@ -271,7 +286,6 @@ public class Main {
                     handleCancelSubscription(me);
                     break;
 
-
                 case 11:
                     me.displaySubscriptions();
                     break;
@@ -291,7 +305,7 @@ public class Main {
         }
     }
 
-
+    // Method to handle searchBySeason()
     private static void handleSearchBySeason() {
         System.out.print("\nEnter season date (YYYY-MM-DD): ");
         LocalDate date;
@@ -311,6 +325,7 @@ public class Main {
         }
     }
 
+    // Method to handle searchByProcimity()
     private static void handleSearchByProximity(Customer me) {
         Coordinate coord = me.getLocationCoordinates();
 
@@ -332,6 +347,7 @@ public class Main {
         }
     }
 
+    // Method to handle matched products
     private static void handleMatchProduct(Customer me) {
         System.out.print("\nEnter product name: ");
         String pname = input.nextLine().trim();
@@ -340,6 +356,7 @@ public class Main {
         targetFarmer.displayUser();
     }
 
+    // Method to handle adding subscriptions
     private static void handleAddSubscription(Customer me) {
         System.out.print("\nEnter category for weekly box: ");
         String subCat = input.nextLine().trim();
@@ -355,6 +372,7 @@ public class Main {
         System.out.println("Subscribed to category \"" + subCat + "\" (" + subQty + "/week).");
     }
 
+    // Method to handle cancel subscriptions
     private static void handleCancelSubscription(Customer me) {
         me.displaySubscriptions();
         if (me.getSubscriptions().isEmpty()) {
@@ -372,6 +390,7 @@ public class Main {
         System.out.println("Subscription " + subId + " removed (if it existed).");
     }
 
+    // Method to handle order checkout
     private static void handleCheckoutCart(Customer me) {
         if (me.getShoppingCart().isEmpty()) {
             System.out.println("\nCart is empty. Nothing to checkout.");
@@ -387,6 +406,3 @@ public class Main {
         System.out.println("\nCheckout complete; cart is now empty.");
     }
 }
-
-
-
