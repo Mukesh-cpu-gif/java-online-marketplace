@@ -335,7 +335,9 @@ public class Main {
     private static void handleMatchProduct(Customer me) {
         System.out.print("\nEnter product name: ");
         String pname = input.nextLine().trim();
-        system.matchFarmer(system.checkProduct(pname), me);
+        Product targetproduct = system.checkProduct(pname);
+        Farmer targetFarmer = system.matchFarmer(targetproduct, me);
+        targetFarmer.displayUser();
     }
 
     private static void handleAddSubscription(Customer me) {
