@@ -5,15 +5,15 @@ public class Subscription {
     private int subscriptionID;
     private String category;
     private int weeklyQuantity;
-    private boolean subscriptionActive = true;
+    private boolean subscriptionActive;
 
     Subscription() {
     }
 
     Subscription(int subscriptionID, String category, int weeklyQuantity) {
-        this.subscriptionID = subscriptionID;
-        this.category = category;
-        this.weeklyQuantity = weeklyQuantity;
+        setSubscriptionID(subscriptionID);
+        setCategory(category);
+        setWeeklyQuantity(weeklyQuantity);
     }
 
     public int getSubscriptionID() {
@@ -30,6 +30,31 @@ public class Subscription {
 
     public boolean getSubscriptionActive() {
         return subscriptionActive;
+    }
+
+    public void setSubscriptionID(int subscriptionID) {
+        if (subscriptionID <= 0) {
+            throw new IllegalArgumentException("SubscriptionID must be positive.");
+        }
+        this.subscriptionID = subscriptionID;
+    }
+
+    public void setCategory(String category) {
+        if(category == null || category.trim().isEmpty()){
+            throw new IllegalArgumentException("Category can't be null or empty.");
+        }
+        this.category = category;
+    }
+
+    public void setWeeklyQuantity(int weeklyQuantity) {
+        if (weeklyQuantity <= 0) {
+            throw new IllegalArgumentException("Weekly Quantity must be positive.");
+        }
+        this.weeklyQuantity = weeklyQuantity;
+    }
+
+    public void activateSubscription() {
+        this.subscriptionActive = true;
     }
 
     public void cancelSubscription() {

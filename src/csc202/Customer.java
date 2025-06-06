@@ -11,7 +11,7 @@ public class Customer extends User {
     }
 
     public Customer(int userID, String userName, String userEmail,
-            String userAddress, String userPassword, Coordinate locationCoordinates) {
+                    String userAddress, String userPassword, Coordinate locationCoordinates) {
         super(userID, userName, userEmail, userAddress, userPassword, locationCoordinates);
         this.shoppingCart = new ArrayList<>();
         this.subscriptions = new ArrayList<>();
