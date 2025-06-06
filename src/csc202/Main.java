@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        while (true) {
+        while (true) { System.out.println("hi");
             System.out.println("""
             \n=== Welcome to the Online Marketplace ===");
             1) Login as Farmer
