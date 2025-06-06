@@ -31,8 +31,22 @@ public class DeliverySystem {
     }
 
     // check if userID is already taken
-    public boolean checkUserID(int ID){
-        return true; // check
+    public boolean checkUserID(int ID, User user){
+        if(user instanceof Farmer){
+            for(Farmer farmer : farmers){
+                if( farmer.getUserID() == ID){
+                    return true;
+                }
+            }
+        }
+        if(user instanceof Customer){
+            for(Customer customer : customers){
+                if( customer.getUserID() == ID){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     //check a farmer is there or no

@@ -256,7 +256,7 @@ public class Main {
                     break;
 
                 case 7:
-                    handleSearchByProximity();
+                    handleSearchByProximity(me);
                     break;
 
                 case 8:
@@ -311,24 +311,10 @@ public class Main {
         }
     }
 
-    private static void handleSearchByProximity() {
-        System.out.print("\nEnter your X coordinate: ");
-        double x;
-        try {
-            x = Double.parseDouble(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid number.");
-            return;
-        }
-        System.out.print("Enter your Y coordinate: ");
-        double y;
-        try {
-            y = Double.parseDouble(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid number.");
-            return;
-        }
-        System.out.print("Enter search radius: ");
+    private static void handleSearchByProximity(Customer me) {
+        Coordinate coord = me.getLocationCoordinates();
+
+        System.out.print("\nEnter search radius: ");
         double r;
         try {
             r = Double.parseDouble(input.nextLine().trim());
@@ -336,7 +322,7 @@ public class Main {
             System.out.println("Invalid number.");
             return;
         }
-        ArrayList<Product> byProx = system.searchByProximity(new Coordinate(x, y), r);
+        ArrayList<Product> byProx = system.searchByProximity(coord, r);
         if (byProx.isEmpty()) {
             System.out.println("No products found within that radius.");
         } else {
