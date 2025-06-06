@@ -61,7 +61,7 @@ public class Main {
                         break;
                     }
                     System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
-                    farmerMenu(loggedInCustomer);
+                    customerMenu(loggedInCustomer);
                     break;
 
                 case 4:
