@@ -224,7 +224,7 @@ public class DeliverySystem {
     public void removeProduct() {
         System.out.print("\nEnter Product ID to remove: ");
         try {
-            int productID = Integer.parseInt(input.nextLine().trim());
+            int productID = Integer.parseInt(Main.getInput().nextLine().trim());
             system.removeProduct(productID);
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid ID format.");
