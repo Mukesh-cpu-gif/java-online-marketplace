@@ -59,7 +59,7 @@ public class Customer extends User {
         throw new IllegalArgumentException("Product not found in cart.");
     }
 
-    public void addSubscription(Subscription s) {
+    public void activateSubscription(Subscription s) {
         subscriptions.add(s);
     }
 

@@ -29,6 +29,12 @@ public class DeliverySystem {
         this.farmerFile = new FarmerFile();
         this.productFile = new ProductFile();
     }
+
+    // check if userID is already taken
+    public boolean checkUserID(int ID){
+        return true; // check
+    }
+
     //check a farmer is there or no
     public Farmer checkFarmer(int farmerID){
         for (Farmer farmer : farmers){
@@ -98,7 +104,7 @@ public class DeliverySystem {
                 System.out.println("Farmer registered successfully!");
                 displayAllFarmers();
             } catch (IOException e) {
-                System.out.println("Error writing farmers.txt: " + e.getMessage());
+                System.out.println("Error writing farmers.txt.");
             }
         } else if(user instanceof Customer){
             Customer newCustomer = new Customer(id, name, email, address, password, coord);
@@ -115,9 +121,9 @@ public class DeliverySystem {
                 System.out.println("Customer registered successfully!");
                 displayAllCustomers();
             } catch (IOException e) {
-                System.out.println("Error writing customers.txt: " + e.getMessage());
+                System.out.println("Error writing customers.txt.");
             } catch (Exception e){
-                System.out.println("Error registering customer!" + e.getMessage());
+                System.out.println("Error registering customer!");
             }
         }
     }
@@ -206,12 +212,12 @@ public class DeliverySystem {
                 try {
                     farmerFile.writeFarmers(farmers);
                 } catch (IOException e) {
-                    System.out.println("Error writing farmers.txt: " + e.getMessage());
+                    System.out.println("Error writing farmers.txt.");
                 }
                 try {
                     productFile.writeProducts(products);
                 } catch (IOException e) {
-                    System.out.println("Error writing produce.txt: " + e.getMessage());
+                    System.out.println("Error writing produce.txt.");
                 }
                 searchEngine.setFarmersProductSearchEngine(farmers);
                 System.out.println("Farmer " + userID + " removed.");
@@ -229,7 +235,7 @@ public class DeliverySystem {
                 try {
                     customerFile.writeCustomers(customers);
                 } catch (IOException e) {
-                    System.out.println("Error writing customers.txt: " + e.getMessage());
+                    System.out.println("Error writing customers.txt.");
                 }
                 System.out.println("Customer " + userID + " removed.");
             } else {
@@ -298,7 +304,7 @@ public class DeliverySystem {
                 System.out.println("Product added successfully!");
             }
         } catch (IOException e) {
-            System.out.println("Error writing produce.txt: " + e.getMessage());
+            System.out.println("Error writing produce.txt.");
         } catch (Exception e) {
             System.out.println("Error adding product!");
         }
@@ -323,13 +329,39 @@ public class DeliverySystem {
                 productFile.writeProducts(products);
                 System.out.println("Product " + productID + " removed.");
             } catch (IOException e) {
-                System.out.println("Error writing product.txt: " + e.getMessage());
+                System.out.println("Error writing product.txt.");
             }
         } else {
             System.out.println("No product with ID " + productID + " found.");
         }
     }
 
+    public void handleAddToCart(Customer me) {
+        System.out.print("\nEnter Product name to add to cart: ");
+        String pname;
+        pname = Main.getInput().nextLine().trim();
+
+        System.out.print("Enter quantity: ");
+        int qty;
+        try {
+            qty = Integer.parseInt(Main.getInput().nextLine().trim());
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid quantity.");
+            return;
+        }
+
+        Product productToCart = checkProduct(pname);
+        if (productToCart != null) {
+            try {
+                me.addToCart(productToCart, qty);
+                System.out.println("Added to cart: " + productToCart.getProductName() + " (Qty: " + qty + ")");
+            } catch (IllegalArgumentException iae) {
+                System.out.println("Error: " + iae.getMessage());
+            }
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
 
     public ArrayList<Product> searchByCategory(String category) {
         return searchEngine.searchByCategory(category);
@@ -372,12 +404,12 @@ public class DeliverySystem {
         try {
             productFile.writeProducts(products);
         } catch (IOException e) {
-            System.out.println("Error writing produce.txt: " + e.getMessage());
+            System.out.println("Error writing produce.txt.");
         }
         try {
             customerFile.writeCustomers(customers);
         } catch (IOException e) {
-            System.out.println("Error writing customers.txt: " + e.getMessage());
+            System.out.println("Error writing customers.txt.");
         }
 
         System.out.println("Order placed successfully.");
@@ -400,11 +432,11 @@ public class DeliverySystem {
 
     public void subscribeCustomer(Customer c, String category, int quantityPerWeek) {
         Subscription s = new Subscription(nextSubscriptionID++, category, quantityPerWeek);
-        c.addSubscription(s);
+        c.activateSubscription(s);
         try {
             customerFile.writeCustomers(customers);
         } catch (IOException e) {
-            System.out.println("Error writing customers.txt: " + e.getMessage());
+            System.out.println("Error writing customers.txt.");
         }
     }
 
@@ -413,7 +445,7 @@ public class DeliverySystem {
         try {
             customerFile.writeCustomers(customers);
         } catch (IOException e) {
-            System.out.println("Error writing customers.txt: " + e.getMessage());
+            System.out.println("Error writing customers.txt.");
         }
     }
 }

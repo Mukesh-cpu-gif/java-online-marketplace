@@ -204,17 +204,6 @@ public class Main {
         }
     }
 
-
-    private static void handleRemoveProduct() {
-        System.out.print("\nEnter Product ID to remove: ");
-        try {
-            int productID = Integer.parseInt(input.nextLine().trim());
-            //system.removeProduct(productID);
-        } catch (NumberFormatException nfe) {
-            System.out.println("Invalid ID format.");
-        }
-    }
-
     private static void customerMenu(Customer me) {
         while (true) {
             System.out.println("""
@@ -246,7 +235,7 @@ public class Main {
                     break;
 
                 case 2:
-                    handleAddToCart(me);
+                    system.handleAddToCart(me);
                     break;
 
                 case 3:
@@ -302,37 +291,6 @@ public class Main {
         }
     }
 
-    private static void handleAddToCart(Customer me) {
-        System.out.print("\nEnter Product name to add to cart: ");
-        String pname;
-        pname = input.nextLine().trim();
-
-        System.out.print("Enter quantity: ");
-        int qty;
-        try {
-            qty = Integer.parseInt(input.nextLine().trim());
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid quantity.");
-            return;
-        }
-        Product toCart = null;
-        for (Product product : products) {
-            if (pname.equals(product.getProductName())) {
-                toCart = product;
-                break;
-            }
-        }
-        if (toCart != null) {
-            try {
-                me.addToCart(toCart, qty);
-                System.out.println("Added to cart: " + toCart.getProductName() + " (Qty: " + qty + ")");
-            } catch (IllegalArgumentException iae) {
-                System.out.println("Error: " + iae.getMessage());
-            }
-        } else {
-            System.out.println("Product not found.");
-        }
-    }
 
     private static void handleRemoveFromCart(Customer me) {
         System.out.print("\nEnter Product name to remove from cart: ");
