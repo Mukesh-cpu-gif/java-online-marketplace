@@ -51,8 +51,8 @@ public class DeliverySystem {
 
     // check if productID is already taken
     public boolean checkProductID(int ID){
-        for(Farmer farmer : farmers){
-            if( farmer.getUserID() == ID){
+        for(Product product : products){
+            if( product.getProductID() == ID){
                 return true;
             }
         }
