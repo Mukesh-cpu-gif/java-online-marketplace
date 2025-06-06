@@ -231,7 +231,7 @@ public class Main {
                     break;
 
                 case 2:
-                    handleAddProduct(me);
+                    system.addProduct(me);
                     break;
 
                 case 3:
@@ -249,44 +249,6 @@ public class Main {
         }
     }
 
-    private static void handleAddProduct(Farmer me) {
-        try {
-            System.out.print("\nEnter Product ID: ");
-            int id = Integer.parseInt(input.nextLine().trim());
-            System.out.print("Enter Product name: ");
-            String name = input.nextLine().trim();
-            System.out.print("Enter Description: ");
-            String description = input.nextLine().trim();
-            System.out.print("Enter product category: ");
-            String category = input.nextLine().trim();
-            System.out.print("Enter price: ");
-            double price = Double.parseDouble(input.nextLine().trim());
-            System.out.print("Enter quantity available: ");
-            int quantityAvailable = Integer.parseInt(input.nextLine().trim());
-            System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
-            LocalDate harvestDate = LocalDate.parse(input.nextLine().trim());
-            if (harvestDate.isBefore(LocalDate.now()) ) {
-                throw new HarvestDateException();
-            }
-            System.out.print("Is it seasonal? (yes/no): ");
-            String seasonalInput = input.nextLine().trim();
-            String season;
-            if(seasonalInput.equalsIgnoreCase("yes")){
-                season = Product.getSeasonFromDate(harvestDate);
-            }
-            else{
-                season = "all";
-            }
-            System.out.print("Is it organic? (yes/no): ");
-            String organicInput = input.nextLine().trim();
-            boolean organic = organicInput.equalsIgnoreCase("yes");
-
-            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
-            system.addProduct(newProduct, me );
-        } catch (Exception e) {
-            System.out.println("Error adding product!");
-        }
-    }
 
     private static void handleRemoveProduct() {
         System.out.print("\nEnter Product ID to remove: ");

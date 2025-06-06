@@ -172,23 +172,55 @@ public class DeliverySystem {
         }
     }
 
+    // adding product by a farmer
+    public void addProduct(Farmer currentFarmer) {
+        System.out.print("\nEnter Product ID: ");
+        int id = Integer.parseInt(Main.getInput().nextLine().trim());
+        System.out.print("Enter Product name: ");
+        String name = Main.getInput().nextLine().trim();
+        System.out.print("Enter Description: ");
+        String description = Main.getInput().nextLine().trim();
+        System.out.print("Enter product category: ");
+        String category = Main.getInput().nextLine().trim();
+        System.out.print("Enter price: ");
+        double price = Double.parseDouble(Main.getInput().nextLine().trim());
+        System.out.print("Enter quantity available: ");
+        int quantityAvailable = Integer.parseInt(Main.getInput().nextLine().trim());
+        System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
+        LocalDate harvestDate = LocalDate.parse(Main.getInput().nextLine().trim());
+        if (harvestDate.isBefore(LocalDate.now()) ) {
+            throw new HarvestDateException();
+        }
+        System.out.print("Is it seasonal? (yes/no): ");
+        String seasonalInput = Main.getInput().nextLine().trim();
+        String season;
+        if(seasonalInput.equalsIgnoreCase("yes")){
+            season = Product.getSeasonFromDate(harvestDate);
+        }
+        else{
+            season = "all";
+        }
+        System.out.print("Is it organic? (yes/no): ");
+        String organicInput = Main.getInput().nextLine().trim();
+        boolean organic = organicInput.equalsIgnoreCase("yes");
 
-    public void addProduct(Product p, Farmer f) {
-
-        if (p != null && !products.contains(p)) {
-            products.add(p);
-            // Also add to owning farmer’s inventory:
-            f.addProduct(p);
-            System.out.println("Product added successfully!");
-
-            try {
+        Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
+        try {
+            if (!products.contains(newProduct)) {
+                products.add(newProduct);
+                // Also add to owning farmer’s inventory:
+                currentFarmer.addProduct(newProduct);
                 productFile.writeProducts(products);
-            } catch (IOException e) {
-                System.out.println("Error writing produce.txt: " + e.getMessage());
+                System.out.println("Product added successfully!");
             }
+        } catch (IOException e) {
+            System.out.println("Error writing produce.txt: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error adding product!");
         }
     }
 
+    // remove product by farmer
     public void removeProduct(int productID) {
         Product toRemove = null;
         for (Product product : products) {
