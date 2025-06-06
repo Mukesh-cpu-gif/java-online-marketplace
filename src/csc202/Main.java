@@ -39,35 +39,15 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    Admin loggedInAdmin = system.loginAdmin();
-                    if (loggedInAdmin == null) {
-                        System.out.println("Invalid Admin credentials.");
-                        break;
-                    }
-                    System.out.println("Logged in as Admin.");
-                    AdminMenu(loggedInAdmin);
+                    handleLoginAdmin();
                     break;
 
                 case 2:
-                    Farmer loggedInFarmer = system.loginFarmer();
-
-                    if (loggedInFarmer == null) {
-                        System.out.println("Invalid farmer credentials.");
-                        break;
-                    }
-                    System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
-                    farmerMenu(loggedInFarmer);
+                    handleLoginFarmer();
                     break;
 
                 case 3:
-                    Customer loggedInCustomer = system.loginCustomer();
-
-                    if (loggedInCustomer == null) {
-                        System.out.println("Invalid customer credentials.");
-                        break;
-                    }
-                    System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
-                    customerMenu(loggedInCustomer);
+                    handleLoginCustomer();
                     break;
 
                 case 4:
@@ -91,6 +71,37 @@ public class Main {
         }
     }
 
+    private static void handleLoginCustomer() {
+        Customer loggedInCustomer = system.loginCustomer();
+
+        if (loggedInCustomer == null) {
+            System.out.println("Invalid customer credentials.");
+            return;
+        }
+        System.out.println("Logged in as customer " + loggedInCustomer.getUserName() + ".");
+        customerMenu(loggedInCustomer);
+    }
+
+    private static void handleLoginFarmer() {
+        Farmer loggedInFarmer = system.loginFarmer();
+
+        if (loggedInFarmer == null) {
+            System.out.println("Invalid farmer credentials.");
+            return;
+        }
+        System.out.println("Logged in as farmer " + loggedInFarmer.getUserName() + ".");
+        farmerMenu(loggedInFarmer);
+    }
+
+    private static void handleLoginAdmin() {
+        Admin loggedInAdmin = system.loginAdmin();
+        if (loggedInAdmin == null) {
+            System.out.println("Invalid Admin credentials.");
+            return;
+        }
+        System.out.println("Logged in as Admin.");
+        AdminMenu(loggedInAdmin);
+    }
 
 
     private static void AdminMenu(Admin me) {
