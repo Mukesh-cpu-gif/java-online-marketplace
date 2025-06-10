@@ -320,7 +320,7 @@ public class Main {
         }
     }
 
-    // Method to handle searchByProcimity()
+    // Method to handle searchByProximity()
     private static void handleSearchByProximity(Customer me) {
         Coordinate coord = me.getLocationCoordinates();
 
@@ -382,7 +382,7 @@ public class Main {
             return;
         }
         system.unsubscribeCustomer(me, subId);
-        System.out.println("Subscription " + subId + " removed (if it existed).");
+        System.out.println("Subscription " + subId + " removed.");
     }
 
     // Method to handle order checkout
