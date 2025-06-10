@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-
 public class DeliverySystem {
 
     private ArrayList<Farmer> farmers;
@@ -23,17 +22,17 @@ public class DeliverySystem {
     }
 
     // check if userID is already taken
-    public boolean checkUserID(int ID, User user){
-        if(user instanceof Farmer){
-            for(Farmer farmer : farmers){
-                if( farmer.getUserID() == ID){
+    public boolean checkUserID(int ID, User user) {
+        if (user instanceof Farmer) {
+            for (Farmer farmer : farmers) {
+                if (farmer.getUserID() == ID) {
                     return true;
                 }
             }
         }
-        if(user instanceof Customer){
-            for(Customer customer : customers){
-                if( customer.getUserID() == ID){
+        if (user instanceof Customer) {
+            for (Customer customer : customers) {
+                if (customer.getUserID() == ID) {
                     return true;
                 }
             }
@@ -42,9 +41,9 @@ public class DeliverySystem {
     }
 
     // check if productID is already taken
-    public boolean checkProductID(int ID){
-        for(Product product : products){
-            if( product.getProductID() == ID){
+    public boolean checkProductID(int ID) {
+        for (Product product : products) {
+            if (product.getProductID() == ID) {
                 return true;
             }
         }
@@ -52,9 +51,9 @@ public class DeliverySystem {
     }
 
     //check a farmer is there or no
-    public Farmer checkFarmer(int farmerID){
-        for (Farmer farmer : farmers){
-            if (farmer.getUserID() == farmerID){
+    public Farmer checkFarmer(int farmerID) {
+        for (Farmer farmer : farmers) {
+            if (farmer.getUserID() == farmerID) {
                 return farmer;
             }
         }
@@ -62,9 +61,9 @@ public class DeliverySystem {
     }
 
     //check a customer is there or no
-    public Customer checkCustomer(int customerID){
-        for (Customer customer : customers){
-            if (customer.getUserID() == customerID){
+    public Customer checkCustomer(int customerID) {
+        for (Customer customer : customers) {
+            if (customer.getUserID() == customerID) {
                 return customer;
             }
         }
@@ -72,7 +71,7 @@ public class DeliverySystem {
     }
 
     // check a product is there or no with pName
-    public Product checkProduct(String pName){
+    public Product checkProduct(String pName) {
         for (Product product : products) {
             if (pName.equals(product.getProductName())) {
                 return product;
@@ -82,7 +81,7 @@ public class DeliverySystem {
     }
 
     // check a product is there or no with pID
-    public Product checkProduct(int pID){
+    public Product checkProduct(int pID) {
         for (Product product : products) {
             if (pID == product.getProductID()) {
                 return product;
@@ -93,7 +92,7 @@ public class DeliverySystem {
 
     // REGISTER a farmer
     public void registerUser(User user) {
-        System.out.print("\nEnter ID (int): ");
+        System.out.print("\nEnter ID: ");
         int id = Integer.parseInt(Main.getInput().nextLine().trim());
         System.out.print("Enter name: ");
         String name = Main.getInput().nextLine().trim();
@@ -109,9 +108,9 @@ public class DeliverySystem {
         double y = Double.parseDouble(Main.getInput().nextLine().trim());
         Coordinate coord = new Coordinate(x, y);
 
-        if (user instanceof Farmer){
+        if (user instanceof Farmer) {
             Farmer farmer = new Farmer();
-            if(checkUserID(id, farmer)){
+            if (checkUserID(id, farmer)) {
                 System.out.println("Farmer ID already taken.");
                 return;
             }
@@ -123,13 +122,13 @@ public class DeliverySystem {
                     searchEngine.setFarmersProductSearchEngine(farmers);
                 }
                 System.out.println("\nFarmer registered successfully!");
-                displayAllFarmers();
+
             } catch (IOException e) {
                 System.out.println("Error writing farmers.txt.");
             }
-        } else if(user instanceof Customer){
+        } else if (user instanceof Customer) {
             Customer customer = new Customer();
-            if(checkUserID(id, customer)){
+            if (checkUserID(id, customer)) {
                 System.out.println("Farmer ID already taken.");
                 return;
             }
@@ -145,10 +144,9 @@ public class DeliverySystem {
                     CustomerFile.writeCustomers(customers);
                 }
                 System.out.println("Customer registered successfully!");
-                displayAllCustomers();
             } catch (IOException e) {
                 System.out.println("Error writing customers.txt.");
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Error registering customer!");
             }
         }
@@ -198,7 +196,7 @@ public class DeliverySystem {
     }
 
     // Admin a user
-    public Admin loginAdmin(){
+    public Admin loginAdmin() {
         Admin admin = new Admin();
         Admin loggedInAdmin = null;
         System.out.print("\nEnter User ID: ");
@@ -250,7 +248,7 @@ public class DeliverySystem {
             } else {
                 System.out.println("No farmer with ID " + userID + " found.");
             }
-        }else if(user instanceof Customer) {
+        } else if (user instanceof Customer) {
             Customer customerToRemove = checkCustomer(userID);
 
             if (customerToRemove != null) {
@@ -272,7 +270,7 @@ public class DeliverySystem {
 
     //display all farmers
     public void displayAllFarmers() {
-        if(farmers.isEmpty()){
+        if (farmers.isEmpty()) {
             System.out.println("No registered farmers.");
         }
         for (Farmer f : farmers) {
@@ -284,7 +282,7 @@ public class DeliverySystem {
 
     //display all customers
     public void displayAllCustomers() {
-        if(customers.isEmpty()){
+        if (customers.isEmpty()) {
             System.out.println("No registered customers.");
         }
         for (Customer c : customers) {
@@ -298,53 +296,51 @@ public class DeliverySystem {
     public void addProduct(Farmer currentFarmer) {
         System.out.print("\nEnter Product ID: ");
         int id = Integer.parseInt(Main.getInput().nextLine().trim());
-        
+
         System.out.print("Enter Product name: ");
-        
+
         String name = Main.getInput().nextLine().trim();
         System.out.print("Enter Description: ");
-        
+
         String description = Main.getInput().nextLine().trim();
         System.out.print("Enter product category: ");
-        
+
         String category = Main.getInput().nextLine().trim();
         System.out.print("Enter price: ");
-        
+
         double price = Double.parseDouble(Main.getInput().nextLine().trim());
         System.out.print("Enter quantity available: ");
-        
+
         int quantityAvailable = Integer.parseInt(Main.getInput().nextLine().trim());
         System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
-        
+
         LocalDate harvestDate = LocalDate.parse(Main.getInput().nextLine().trim());
-        
-        if (harvestDate.isBefore(LocalDate.now()) ) {
-            throw new HarvestDateException();
-        }
 
         System.out.print("Is it seasonal? (yes/no): ");
         String seasonalInput = Main.getInput().nextLine().trim();
         String season;
-        if(seasonalInput.equalsIgnoreCase("yes")){
+        if (seasonalInput.equalsIgnoreCase("yes")) {
             season = Product.getSeasonFromDate(harvestDate);
-        }
-        else{
+        } else {
             season = "all";
         }
         System.out.print("Is it organic? (yes/no): ");
         String organicInput = Main.getInput().nextLine().trim();
         boolean organic = organicInput.equalsIgnoreCase("yes");
 
-        Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
         try {
+            Product newProduct = new Product(id, name, description, category, price, quantityAvailable, harvestDate, season, organic);
+
             if (!products.contains(newProduct)) {
                 products.add(newProduct);
-                // Also add to owning farmer’s inventorty:
                 currentFarmer.addProduct(newProduct);
                 ProductFile.writeProducts(products);
                 FarmerFile.writeFarmers(farmers);
                 System.out.println("Product added successfully!");
             }
+
+        } catch (HarvestDateException hde) {
+            System.out.println("Failed to add product: " + hde.getMessage());
         } catch (IOException e) {
             System.out.println("Error writing produce.txt.");
         } catch (Exception e) {
@@ -460,8 +456,8 @@ public class DeliverySystem {
     public void processOrder(Customer customer, Product product, int quantity) {
         LocalDate now = LocalDate.now();
 
-        if(product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0){
-            throw new OutOfSeasonException(product.getProductName() +" is not in season and no quantity available.");
+        if (product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0) {
+            throw new OutOfSeasonException(product.getProductName() + " is not in season and no quantity available.");
         }
 
         if (quantity > product.getQuantityAvailable()) {
@@ -497,7 +493,7 @@ public class DeliverySystem {
         System.out.println("Order placed successfully.");
     }
 
-    public Farmer matchFarmer(Product targetproduct,Customer customer) {
+    public Farmer matchFarmer(Product targetproduct, Customer customer) {
         double minDistance = 999999999;
         Farmer targetfarmer = null;
         for (Farmer farmer : farmers) {
@@ -510,7 +506,6 @@ public class DeliverySystem {
         }
         return targetfarmer;
     }
-
 
     public void subscribeCustomer(Customer c, String category, int quantityPerWeek) {
         Subscription s = new Subscription(nextSubscriptionID++, category, quantityPerWeek);

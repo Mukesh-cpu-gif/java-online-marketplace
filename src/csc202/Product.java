@@ -19,7 +19,7 @@ public class Product {
 
     Product(int productID, String productName, String productDescription,
             String productCategory, double productPrice, int quantityAvailable,
-            LocalDate harvestDate, String season, boolean organic) {
+            LocalDate harvestDate, String season, boolean organic){
         setProductID(productID);
         setProductName(productName);
         setProductDescription(productDescription);
@@ -54,6 +54,7 @@ public class Product {
     public int getQuantityAvailable() {
         return quantityAvailable;
     }
+
     public LocalDate getHarvestDate() {
         return harvestDate;
     }
@@ -74,28 +75,28 @@ public class Product {
     }
 
     public void setProductID(int productID) {
-        if(productID <= 0){
+        if (productID <= 0) {
             throw new IllegalArgumentException("Product ID can't be negative or zero.");
         }
         this.productID = productID;
     }
 
     public void setProductName(String productName) {
-        if(productName == null || productName.trim().isEmpty()){
+        if (productName == null || productName.trim().isEmpty()) {
             throw new IllegalArgumentException("Product Name can't be null or empty.");
         }
         this.productName = productName;
     }
 
     public void setProductDescription(String productDescription) {
-        if(productDescription == null || productDescription.trim().isEmpty()){
+        if (productDescription == null || productDescription.trim().isEmpty()) {
             throw new IllegalArgumentException("Product Description can't be null or empty.");
         }
         this.productDescription = productDescription;
     }
 
     public void setProductCategory(String productCategory) {
-        if(productCategory == null || productCategory.trim().isEmpty()){
+        if (productCategory == null || productCategory.trim().isEmpty()) {
             throw new IllegalArgumentException("Product Name can't be null or empty.");
         }
         this.productCategory = productCategory;
@@ -108,7 +109,7 @@ public class Product {
         this.quantityAvailable = quantityAvailable;
     }
 
-    public void setHarvestDate(LocalDate harvestDate) {
+    public void setHarvestDate(LocalDate harvestDate) throws HarvestDateException {
         if (harvestDate.isBefore(LocalDate.now())) {
             throw new HarvestDateException();
         }

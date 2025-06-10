@@ -5,4 +5,15 @@ Farm Address: 1
 X Coorinate: 1.0
 Y Coorinate: 1.0
 Available Products: 
+apple
+orange
+
+Farmer ID: 2
+Farmer Name: 2
+Farm Address: 2
+Farm Address: 2
+X Coorinate: 2.0
+Y Coorinate: 2.0
+Available Products: 
+Banana
 
