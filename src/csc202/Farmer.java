@@ -46,7 +46,7 @@ public class Farmer extends User {
         }
         System.out.println("Available Products:");
         for (Product p : availableProducts) {
-            System.out.println("   - " + p);
+            System.out.println(p);
         }
     }
 
