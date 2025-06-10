@@ -12,11 +12,6 @@ public class Main {
     // DeliverySystem object
     private static DeliverySystem system = new DeliverySystem();
 
-    // ArrayList for storing data
-    private static ArrayList<Farmer> farmers = new ArrayList<>();
-    private static ArrayList<Customer> customers = new ArrayList<>();
-    private static ArrayList<Product> products = new ArrayList<>();
-
     // Getter method for scanner object
     public static Scanner getInput() {
         return input;
