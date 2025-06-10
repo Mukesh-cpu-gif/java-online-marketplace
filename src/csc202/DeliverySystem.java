@@ -292,18 +292,26 @@ public class DeliverySystem {
     public void addProduct(Farmer currentFarmer) {
         System.out.print("\nEnter Product ID: ");
         int id = Integer.parseInt(Main.getInput().nextLine().trim());
+        
         System.out.print("Enter Product name: ");
+        
         String name = Main.getInput().nextLine().trim();
         System.out.print("Enter Description: ");
+        
         String description = Main.getInput().nextLine().trim();
         System.out.print("Enter product category: ");
+        
         String category = Main.getInput().nextLine().trim();
         System.out.print("Enter price: ");
+        
         double price = Double.parseDouble(Main.getInput().nextLine().trim());
         System.out.print("Enter quantity available: ");
+        
         int quantityAvailable = Integer.parseInt(Main.getInput().nextLine().trim());
         System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
+        
         LocalDate harvestDate = LocalDate.parse(Main.getInput().nextLine().trim());
+        
         if (harvestDate.isBefore(LocalDate.now()) ) {
             throw new HarvestDateException();
         }
