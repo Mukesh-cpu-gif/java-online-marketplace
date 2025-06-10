@@ -1,14 +1,7 @@
-Customer ID: 201
-Customer Name: aryan
-Customer Email: asd@
-Delivery Address: asd
-X Coordinate: 34.0
-Y Coordinate: 26.0
-
-Customer ID: 202
-Customer Name: ihsaan
-Customer Email: ih@
-Delivery Address: as
-X Coordinate: 64.0
-Y Coordinate: 17.0
+Customer ID: 1
+Customer Name: 1
+Customer Email: !@
+Delivery Address: 1
+X Coordinate: 1.0
+Y Coordinate: 1.0
 

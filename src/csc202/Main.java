@@ -2,6 +2,7 @@ package csc202;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -353,7 +354,13 @@ public class Main {
     // Method to handle adding subscriptions
     private static void handleAddSubscription(Customer me) {
         System.out.print("\nEnter category for weekly box: ");
-        String subCat = input.nextLine().trim();
+        String subCat;
+        try {
+            subCat = input.nextLine().trim();
+        } catch (InputMismatchException ex) {
+            System.out.println("Invalid Category.");
+            return;
+        }
         System.out.print("Enter quantity per week: ");
         int subQty;
         try {

@@ -39,8 +39,10 @@ public class ProductSearchEngine implements IProductSearch {
         ArrayList<Product> results = new ArrayList<>();
         for (Farmer f : farmers) {
             double dist = f.getLocationCoordinates().distanceTo(origin);
-            if (dist <= radius) {
-                results.addAll(f.getAvailableProducts());
+            if (dist <= radius){
+                for (Product p : f.getAvailableProducts()) {
+                    results.add(p);
+                }
             }
         }
         return results;

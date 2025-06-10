@@ -462,7 +462,7 @@ public class DeliverySystem {
         LocalDate now = LocalDate.now();
 
         try {
-            if (product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0) {
+            if (!(product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now))) && product.getQuantityAvailable() == 0) {
                 throw new OutOfSeasonException(product.getProductName() + " is not in season and no quantity available.");
             }
 
