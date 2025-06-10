@@ -130,7 +130,7 @@ public class DeliverySystem {
                     farmerFile.writeFarmers(farmers);
                     searchEngine.setFarmersProductSearchEngine(farmers);
                 }
-                System.out.println("Farmer registered successfully!");
+                System.out.println("\nFarmer registered successfully!");
                 displayAllFarmers();
             } catch (IOException e) {
                 System.out.println("Error writing farmers.txt.");
