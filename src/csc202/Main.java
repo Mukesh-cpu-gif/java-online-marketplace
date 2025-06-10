@@ -253,7 +253,6 @@ public class Main {
                     break;
 
                 case 4:
-                    me.displayUser();
                     me.displayShoppingCart();
                     break;
 

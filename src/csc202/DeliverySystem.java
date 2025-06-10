@@ -461,41 +461,48 @@ public class DeliverySystem {
     public void processOrder(Customer customer, Product product, int quantity) {
         LocalDate now = LocalDate.now();
 
-        if (product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0) {
-            throw new OutOfSeasonException(product.getProductName() + " is not in season and no quantity available.");
-        }
-
-        if (quantity > product.getQuantityAvailable()) {
-            System.out.println("Insufficient stock for \"" + product.getProductName() + "\".");
-            return;
-        }
-
-        boolean canDeliver = false;
-        for (Farmer f : farmers) {
-            if (f.getLocationCoordinates().distanceTo(customer.getLocationCoordinates()) <= 50.0) {
-                canDeliver = true;
-                break;
+        try {
+            if (product.getSeason().equalsIgnoreCase(Product.getSeasonFromDate(now)) && product.getQuantityAvailable() == 0) {
+                throw new OutOfSeasonException(product.getProductName() + " is not in season and no quantity available.");
             }
-        }
-        if (!canDeliver) {
-            throw new DeliveryUnavailableException();
-        }
 
-        product.setQuantityAvailable(product.getQuantityAvailable() - quantity);
-        customer.addToCart(product, quantity);
+            if (quantity > product.getQuantityAvailable()) {
+                System.out.println("Insufficient stock for \"" + product.getProductName() + "\".");
+                return;
+            }
 
-        try {
-            ProductFile.writeProducts(products);
-        } catch (IOException e) {
-            System.out.println("Error writing produce.txt.");
-        }
-        try {
-            CustomerFile.writeCustomers(customers);
-        } catch (IOException e) {
-            System.out.println("Error writing customers.txt.");
-        }
+            boolean canDeliver = false;
+            for (Farmer f : farmers) {
+                if (f.getLocationCoordinates().distanceTo(customer.getLocationCoordinates()) <= 50.0) {
+                    canDeliver = true;
+                    break;
+                }
+            }
+            if (!canDeliver) {
+                throw new DeliveryUnavailableException();
+            }
 
-        System.out.println("Order placed successfully.");
+            product.setQuantityAvailable(product.getQuantityAvailable() - quantity);
+            customer.addToCart(product, quantity);
+
+            try {
+                ProductFile.writeProducts(products);
+            } catch (IOException e) {
+                System.out.println("Error writing produce.txt.");
+            }
+            try {
+                CustomerFile.writeCustomers(customers);
+            } catch (IOException e) {
+                System.out.println("Error writing customers.txt.");
+            }
+
+            System.out.println("Order placed successfully.");
+
+        } catch (OutOfSeasonException e) {
+            System.out.println("Order failed: " + e.getMessage());
+        } catch (DeliveryUnavailableException e) {
+            System.out.println("Order failed: Delivery is unavailable to your location.");
+        }
     }
 
     public Farmer matchFarmer(Product targetproduct, Customer customer) {
