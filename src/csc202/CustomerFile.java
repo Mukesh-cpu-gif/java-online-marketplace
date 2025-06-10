@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class CustomerFile {
 
-    public void writeCustomers(ArrayList<Customer> customers) throws IOException {
+    public static void writeCustomers(ArrayList<Customer> customers) throws IOException {
         File customerFile = new File("customers.txt");
         try (PrintWriter output = new PrintWriter(customerFile)) {
             for (Customer i : customers) {
@@ -24,7 +24,7 @@ public class CustomerFile {
         }
     }
 
-    public void readCustomers() throws FileNotFoundException {
+    public static void readCustomers() throws FileNotFoundException {
         File file = new File("customers.txt");
         try (Scanner input = new Scanner(file)) {
             while (input.hasNextLine()) {

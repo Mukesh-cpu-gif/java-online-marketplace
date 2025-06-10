@@ -97,7 +97,7 @@ public class Customer extends User {
         }
         System.out.println("Shopping Cart:");
         for (CartItem ci : shoppingCart) {
-            System.out.println("   - " + ci);
+            System.out.println(ci);
         }
     }
 

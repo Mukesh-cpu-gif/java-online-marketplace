@@ -12,10 +12,6 @@ public class DeliverySystem {
     private ArrayList<Product> products;
     private ProductSearchEngine searchEngine;
 
-    private CustomerFile customerFile;
-    private FarmerFile farmerFile;
-    private ProductFile productFile;
-
     private int nextSubscriptionID = 1;
 
     // Constructor for delivery system
@@ -24,10 +20,6 @@ public class DeliverySystem {
         this.customers = new ArrayList<>();
         this.products = new ArrayList<>();
         this.searchEngine = new ProductSearchEngine(farmers);
-
-        this.customerFile = new CustomerFile();
-        this.farmerFile = new FarmerFile();
-        this.productFile = new ProductFile();
     }
 
     // check if userID is already taken
@@ -127,7 +119,7 @@ public class DeliverySystem {
             try {
                 if (!farmers.contains(newFarmer)) {
                     farmers.add(newFarmer);
-                    farmerFile.writeFarmers(farmers);
+                    FarmerFile.writeFarmers(farmers);
                     searchEngine.setFarmersProductSearchEngine(farmers);
                 }
                 System.out.println("\nFarmer registered successfully!");
@@ -136,6 +128,11 @@ public class DeliverySystem {
                 System.out.println("Error writing farmers.txt.");
             }
         } else if(user instanceof Customer){
+            Customer customer = new Customer();
+            if(checkUserID(id, customer)){
+                System.out.println("Farmer ID already taken.");
+                return;
+            }
             Customer newCustomer = new Customer(id, name, email, address, password, coord);
             try {
                 System.out.print("Receive seasonal updates? (yes/no): ");
@@ -145,7 +142,7 @@ public class DeliverySystem {
                 }
                 if (!customers.contains(newCustomer)) {
                     customers.add(newCustomer);
-                    customerFile.writeCustomers(customers);
+                    CustomerFile.writeCustomers(customers);
                 }
                 System.out.println("Customer registered successfully!");
                 displayAllCustomers();
@@ -239,12 +236,12 @@ public class DeliverySystem {
                 farmers.remove(farmerToRemove);
 
                 try {
-                    farmerFile.writeFarmers(farmers);
+                    FarmerFile.writeFarmers(farmers);
                 } catch (IOException e) {
                     System.out.println("Error writing farmers.txt.");
                 }
                 try {
-                    productFile.writeProducts(products);
+                    ProductFile.writeProducts(products);
                 } catch (IOException e) {
                     System.out.println("Error writing produce.txt.");
                 }
@@ -262,7 +259,7 @@ public class DeliverySystem {
                 customers.remove(customerToRemove);
 
                 try {
-                    customerFile.writeCustomers(customers);
+                    CustomerFile.writeCustomers(customers);
                 } catch (IOException e) {
                     System.out.println("Error writing customers.txt.");
                 }
@@ -330,7 +327,7 @@ public class DeliverySystem {
                 products.add(newProduct);
                 // Also add to owning farmer’s inventory:
                 currentFarmer.addProduct(newProduct);
-                productFile.writeProducts(products);
+                ProductFile.writeProducts(products);
                 System.out.println("Product added successfully!");
             }
         } catch (IOException e) {
@@ -356,7 +353,7 @@ public class DeliverySystem {
                 products.remove(productToRemove);
                 // Also remove from owning farmer’s inventory:
                 currentFarmer.removeProduct(productToRemove);
-                productFile.writeProducts(products);
+                ProductFile.writeProducts(products);
                 System.out.println("Product " + productID + " removed.");
             } catch (IOException e) {
                 System.out.println("Error writing product.txt.");
@@ -471,12 +468,12 @@ public class DeliverySystem {
         customer.addToCart(product, quantity);
 
         try {
-            productFile.writeProducts(products);
+            ProductFile.writeProducts(products);
         } catch (IOException e) {
             System.out.println("Error writing produce.txt.");
         }
         try {
-            customerFile.writeCustomers(customers);
+            CustomerFile.writeCustomers(customers);
         } catch (IOException e) {
             System.out.println("Error writing customers.txt.");
         }
@@ -503,7 +500,7 @@ public class DeliverySystem {
         Subscription s = new Subscription(nextSubscriptionID++, category, quantityPerWeek);
         c.activateSubscription(s);
         try {
-            customerFile.writeCustomers(customers);
+            CustomerFile.writeCustomers(customers);
         } catch (IOException e) {
             System.out.println("Error writing customers.txt.");
         }
@@ -512,7 +509,7 @@ public class DeliverySystem {
     public void unsubscribeCustomer(Customer c, int subscriptionID) {
         c.removeSubscription(subscriptionID);
         try {
-            customerFile.writeCustomers(customers);
+            CustomerFile.writeCustomers(customers);
         } catch (IOException e) {
             System.out.println("Error writing customers.txt.");
         }
