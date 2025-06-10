@@ -32,7 +32,7 @@ public class Farmer extends User {
 
     @Override
     public void displayUser() {
-        System.out.println("Farmer ID: " + getUserID());
+        System.out.println("\nFarmer ID: " + getUserID());
         System.out.println("Farmer Name: " + getUserName());
         System.out.println("Farmer Email: " + getUserEmail());
         System.out.println("Farm Address: " + getUserAddress());
@@ -44,9 +44,13 @@ public class Farmer extends User {
             System.out.println("No products available.");
             return;
         }
-        System.out.println("Available Products:");
+        System.out.println("\nAvailable Products:");
         for (Product p : availableProducts) {
+
             System.out.println(p);
+
+            System.out.println("\n   - " + p);
+
         }
     }
 
