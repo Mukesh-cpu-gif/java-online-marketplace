@@ -15,7 +15,7 @@ public abstract class User {
 
     public User(int userID, String userName, String userEmail,
                 String userAddress, String userPassword,
-                Coordinate locationCoordinates) {
+                Coordinate locationCoordinates) throws IllegalArgumentException{
         setUserID(userID);
         setUserName(userName);
         setUserEmail(userEmail);
@@ -67,10 +67,19 @@ public abstract class User {
     }
 
     public void setUserEmail(String userEmail) {
-        if(userName.trim().contains("@")){
-            throw new IllegalArgumentException("Email ID should contain @.");
+        while (true) {
+            try {
+                if (!userEmail.trim().contains("@")) {
+                    throw new IllegalArgumentException("Email ID should contain '@'.");
+                }
+                this.userEmail = userEmail;
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                System.out.print("Enter a valid email: ");
+                userEmail = Main.getInput().nextLine().trim();
+            }
         }
-        this.userEmail = userEmail;
     }
 
     public void setUserAddress(String userAddress) {

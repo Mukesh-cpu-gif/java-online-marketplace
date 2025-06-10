@@ -122,14 +122,13 @@ public class DeliverySystem {
                     searchEngine.setFarmersProductSearchEngine(farmers);
                 }
                 System.out.println("\nFarmer registered successfully!");
-
             } catch (IOException e) {
                 System.out.println("Error writing farmers.txt.");
             }
         } else if (user instanceof Customer) {
             Customer customer = new Customer();
             if (checkUserID(id, customer)) {
-                System.out.println("Farmer ID already taken.");
+                System.out.println("Customer ID already taken.");
                 return;
             }
             Customer newCustomer = new Customer(id, name, email, address, password, coord);
@@ -314,7 +313,13 @@ public class DeliverySystem {
         int quantityAvailable = Integer.parseInt(Main.getInput().nextLine().trim());
         System.out.print("Enter Harvest Date in YYYY-MM-DD format: ");
 
-        LocalDate harvestDate = LocalDate.parse(Main.getInput().nextLine().trim());
+        LocalDate harvestDate;
+        try {
+            harvestDate = LocalDate.parse(Main.getInput().nextLine().trim());
+        } catch (Exception ex) {
+            System.out.println("Invalid date format.");
+            return;
+        }
 
         System.out.print("Is it seasonal? (yes/no): ");
         String seasonalInput = Main.getInput().nextLine().trim();

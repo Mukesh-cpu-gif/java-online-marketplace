@@ -1,12 +1,16 @@
-Product ID: 1
+Product ID: 1011
 Product Name: apple
-Harvest Date: 2025-09-09
+Harvest Date: 2025-11-09
 
-Product ID: 2
+Product ID: 1012
+Product Name: jam
+Harvest Date: 2025-12-06
+
+Product ID: 1021
+Product Name: onion
+Harvest Date: 2025-07-21
+
+Product ID: 1022
 Product Name: orange
-Harvest Date: 2025-09-03
-
-Product ID: 1
-Product Name: Banana
-Harvest Date: 2025-09-03
+Harvest Date: 2026-02-24
 

@@ -33,6 +33,6 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return product.getProductName() + " (Quantity: " + quantity + ")\n";
+        return product.getProductName() + " (Quantity: " + quantity + ")";
     }
 }

@@ -190,6 +190,7 @@ public class Main {
             }
             switch (fchoice) {
                 case 1:
+                    me.displayUser();
                     me.displayAvailableProducts();
                     break;
 

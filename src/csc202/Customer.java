@@ -48,7 +48,7 @@ public class Customer extends User {
                     throw new IllegalArgumentException("Quantity must not exceed the quantity of product in cart.");
                 }
                 int currentQty = ci.getQuantity();
-                if (qty >= currentQty) {
+                if (qty <= currentQty) {
                     shoppingCart.remove(ci);
                 } else {
                     ci.setQuantity(currentQty - qty);
