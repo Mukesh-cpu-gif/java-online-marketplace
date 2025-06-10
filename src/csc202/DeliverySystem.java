@@ -272,6 +272,9 @@ public class DeliverySystem {
 
     //display all farmers
     public void displayAllFarmers() {
+        if(farmers.isEmpty()){
+            System.out.println("No registered farmers.");
+        }
         for (Farmer f : farmers) {
             f.displayUser();
             f.displayAvailableProducts();
@@ -281,6 +284,9 @@ public class DeliverySystem {
 
     //display all customers
     public void displayAllCustomers() {
+        if(customers.isEmpty()){
+            System.out.println("No registered customers.");
+        }
         for (Customer c : customers) {
             c.displayUser();
             c.displayShoppingCart();
