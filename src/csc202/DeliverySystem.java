@@ -325,9 +325,10 @@ public class DeliverySystem {
         try {
             if (!products.contains(newProduct)) {
                 products.add(newProduct);
-                // Also add to owning farmer’s inventory:
+                // Also add to owning farmer’s inventorty:
                 currentFarmer.addProduct(newProduct);
                 ProductFile.writeProducts(products);
+                FarmerFile.writeFarmers(farmers);
                 System.out.println("Product added successfully!");
             }
         } catch (IOException e) {
@@ -354,6 +355,7 @@ public class DeliverySystem {
                 // Also remove from owning farmer’s inventory:
                 currentFarmer.removeProduct(productToRemove);
                 ProductFile.writeProducts(products);
+                FarmerFile.writeFarmers(farmers);
                 System.out.println("Product " + productID + " removed.");
             } catch (IOException e) {
                 System.out.println("Error writing product.txt.");
